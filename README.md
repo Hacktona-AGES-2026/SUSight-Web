@@ -14,6 +14,16 @@ pnpm dev
 
 Abra http://localhost:3000. Por padrão a aplicação usa dados de demonstração e não precisa do backend.
 
+### Rodar contra o SUSight-Backend
+
+Com o backend em `http://127.0.0.1:8000` (veja o README dele; `tools/seed_demo.py` cria uma fila e propostas de demonstração):
+
+```bash
+NEXT_PUBLIC_DATA_SOURCE=api BACKEND_URL=http://127.0.0.1:8000 pnpm dev
+```
+
+O navegador chama `/backend/*` e o Next repassa ao backend (sem CORS). Entre com a conta do backend, por exemplo `medico-demo` e `demo1234`, nos campos "CRM e UF" e "Senha". O backend não traz nome, CNS nem procedimento do paciente: o web mostra o paciente pela solicitação e deriva o procedimento do CID. Remover da fila, enviar documento e decisões registradas continuam só na tela (spec 009).
+
 ### Fonte de dados
 
 A variável `NEXT_PUBLIC_DATA_SOURCE` em `.env.local` escolhe de onde vêm os dados:
