@@ -13,4 +13,4 @@ Cada tarefa é pequena, verificável e vira um commit atômico.
 - [x] 7. Gerar os tipos do contrato com `pnpm api:types`.
 - [x] 8. Camada de dados: interface, fonte mock com fixtures, fonte API, seletor por variável de ambiente e `.env.example`.
 - [x] 9. Testes de exemplo: página inicial e dados do mock (incluindo CNS mascarado).
-- [ ] 10. README: como rodar, testar, estrutura de pastas e onde ficam specs, contrato e mocks.
+- [x] 10. README: como rodar, testar, estrutura de pastas e onde ficam specs, contrato e mocks.
