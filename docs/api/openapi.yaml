@@ -418,7 +418,7 @@ components:
 
     TribunalAgent:
       type: string
-      enum: [evidencias, contestacao, equidade]
+      enum: [evidencias, contestacao, equidade, juiz]
 
     TribunalOpinion:
       type: object

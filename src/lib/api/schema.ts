@@ -545,7 +545,7 @@ export interface components {
             summary?: string;
         };
         /** @enum {string} */
-        TribunalAgent: "evidencias" | "contestacao" | "equidade";
+        TribunalAgent: "evidencias" | "contestacao" | "equidade" | "juiz";
         TribunalOpinion: {
             agent: components["schemas"]["TribunalAgent"];
             /** @example Equidade e regras */

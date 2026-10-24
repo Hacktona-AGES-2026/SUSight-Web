@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Scale, ShieldCheck, TriangleAlert } from "lucide-react";
+import { Gavel, Scale, ShieldCheck, TriangleAlert } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Chip } from "@/components/chip";
 import { ErrorNotice, Notice } from "@/components/notice";
@@ -24,6 +24,7 @@ const agentIcons: Record<TribunalAgent, typeof Scale> = {
   evidencias: Scale,
   contestacao: TriangleAlert,
   equidade: ShieldCheck,
+  juiz: Gavel,
 };
 
 const historyLabels: Record<string, string> = {

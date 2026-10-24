@@ -225,9 +225,10 @@ const evidenceKinds: Record<string, SourceDocument["kind"]> = {
 };
 
 const labels: Record<TribunalAgent, string> = {
-  evidencias: "Agente de evidências",
-  contestacao: "Agente de contestação",
-  equidade: "Agente de equidade e regras",
+  evidencias: "A favor de subir",
+  contestacao: "A favor de descer",
+  equidade: "Imparcial",
+  juiz: "Juiz",
 };
 
 function pretty(text: string) {
