@@ -20,20 +20,22 @@ export function useDecide(proposalId: string) {
   const [sending, setSending] = useState(false);
   const [error, setError] = useState<string>();
 
-  async function decide(type: DecisionType, text?: string) {
+  async function decide(type: DecisionType, text?: string, exams?: string[]) {
     if (sending) return;
     setSending(true);
     setError(undefined);
     try {
-      await dataSource.decide(proposalId, { type, text });
+      await dataSource.decide(proposalId, { type, text, exams });
       router.push(`/revisoes?aviso=${flash[type]}`);
     } catch (e) {
       setSending(false);
       if (redirect(e)) return;
       if (e instanceof ApiError && e.status === 409) {
-        const { decidedBy, decidedAt } = e.body as AlreadyDecidedError;
+        const { decidedBy, decidedAt } = e.body as Partial<AlreadyDecidedError>;
         setError(
-          `Esta proposta já foi decidida por ${decidedBy.name} em ${formatDay(decidedAt)} às ${formatTime(decidedAt)}.`,
+          decidedBy && decidedAt
+            ? `Esta proposta já foi decidida por ${decidedBy.name} em ${formatDay(decidedAt)} às ${formatTime(decidedAt)}.`
+            : e.body.message,
         );
       } else {
         setError(errorMessage(e));

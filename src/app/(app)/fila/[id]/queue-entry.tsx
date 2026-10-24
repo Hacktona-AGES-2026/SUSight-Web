@@ -13,7 +13,7 @@ import {
   formatDate,
   formatDay,
   formatTime,
-  maskCns,
+  patientRef,
   ordinal,
 } from "@/lib/format";
 import { eventDetail, eventTags, eventTitle } from "@/lib/history";
@@ -108,7 +108,7 @@ export function QueueEntryView({ id }: { id: string }) {
         <div className="flex flex-col gap-1">
           <h1 className="text-title-page font-bold">{patient.name}</h1>
           <p className="text-subtitle text-ink-secondary">
-            CNS {maskCns(patient.cnsMasked)} · {patient.procedure}
+            {patientRef(patient.cnsMasked)} · {patient.procedure}
           </p>
         </div>
         <div className="flex items-center gap-2">

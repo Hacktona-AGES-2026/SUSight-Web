@@ -25,13 +25,16 @@ export function useSessionRedirect() {
   );
 }
 
+/** Intervalo da atualização em segundo plano (a fila é compartilhada e muda a todo momento). */
+export const REFRESH_MS = 5000;
+
 type State<T> = { key: string; data?: T; error?: string };
 
 /**
  * Carrega dados quando `key` muda e expõe `retry`. `load` deve depender só
  * do que está em `key`.
  */
-export function useData<T>(key: string, load: () => Promise<T>) {
+export function useData<T>(key: string, load: () => Promise<T>, refreshMs = REFRESH_MS) {
   const [attempt, setAttempt] = useState(0);
   const [state, setState] = useState<State<T>>({ key: "" });
   const redirect = useSessionRedirect();
@@ -51,6 +54,32 @@ export function useData<T>(key: string, load: () => Promise<T>) {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [current]);
+
+  // Atualiza em silêncio com a aba visível; falha momentânea mantém o que já está na tela.
+  useEffect(() => {
+    if (!refreshMs) return;
+    let cancelled = false;
+    const timer = setInterval(() => {
+      if (document.visibilityState !== "visible") return;
+      load().then(
+        (data) =>
+          !cancelled &&
+          setState((old) =>
+            old.key === current && JSON.stringify(old.data) !== JSON.stringify(data)
+              ? { key: current, data }
+              : old,
+          ),
+        (error) => {
+          if (!cancelled) redirect(error);
+        },
+      );
+    }, refreshMs);
+    return () => {
+      cancelled = true;
+      clearInterval(timer);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [current, refreshMs]);
 
   const ready = state.key === current;
   return {

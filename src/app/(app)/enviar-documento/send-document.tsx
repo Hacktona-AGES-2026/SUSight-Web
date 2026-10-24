@@ -11,7 +11,7 @@ import { Segmented } from "@/components/segmented";
 import { TextArea, TextField } from "@/components/field";
 import type { QueueEntry } from "@/lib/api/types";
 import { dataSource } from "@/lib/data";
-import { formatDay, formatTime, maskCns, ordinal } from "@/lib/format";
+import { formatDay, formatTime, patientRef, ordinal } from "@/lib/format";
 import { useData } from "@/lib/use-data";
 
 const MAX_BYTES = 20 * 1024 * 1024;
@@ -88,7 +88,7 @@ export function SendDocument() {
             {doctor.name}
           </Row>
           <Row icon={User} title={patient.patient.name}>
-            CNS {maskCns(patient.patient.cnsMasked)}
+            {patientRef(patient.patient.cnsMasked)}
           </Row>
         </ul>
         <div className="flex justify-end gap-3">
@@ -111,7 +111,7 @@ export function SendDocument() {
           subtitle="Passo 2 de 3 · Confirme e anexe"
         />
         <Notice title="Paciente identificado" tone="success" icon={Check}>
-          {patient.patient.name} · CNS {maskCns(patient.patient.cnsMasked)} ·{" "}
+          {patient.patient.name} · {patientRef(patient.patient.cnsMasked)} ·{" "}
           {patient.patient.procedure}
         </Notice>
         <Segmented
@@ -203,7 +203,7 @@ export function SendDocument() {
                     {e.patient.name}
                   </span>
                   <span className="text-note text-ink-secondary">
-                    CNS {maskCns(e.patient.cnsMasked)} · {e.patient.procedure} ·{" "}
+                    {patientRef(e.patient.cnsMasked)} · {e.patient.procedure} ·{" "}
                     {ordinal(e.position)}
                   </span>
                 </span>

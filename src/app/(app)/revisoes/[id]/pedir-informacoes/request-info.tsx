@@ -9,7 +9,7 @@ import { TextArea } from "@/components/field";
 import { ErrorNotice, Notice } from "@/components/notice";
 import { PageHeader, SectionTitle } from "@/components/page-header";
 import { dataSource } from "@/lib/data";
-import { maskCns } from "@/lib/format";
+import { patientRef } from "@/lib/format";
 import { useData } from "@/lib/use-data";
 import { useDecide } from "../use-decide";
 
@@ -50,7 +50,7 @@ export function RequestInfo({ id }: { id: string }) {
     <>
       <PageHeader
         title="Pedir informações ao paciente"
-        subtitle={`${p.patient.name} · CNS ${maskCns(p.patient.cnsMasked)}. O paciente recebe o pedido no aplicativo.`}
+        subtitle={`${p.patient.name} · ${patientRef(p.patient.cnsMasked)}. O paciente recebe o pedido no aplicativo.`}
       />
       <SectionTitle>O que você precisa</SectionTitle>
       <div className="flex flex-col gap-2">
@@ -84,8 +84,8 @@ export function RequestInfo({ id }: { id: string }) {
         </Button>
         <Button
           size="desktop"
-          disabled={sending || message.trim() === ""}
-          onClick={() => decide("request_info", message.trim())}
+          disabled={sending || message.trim() === "" || selected.length === 0}
+          onClick={() => decide("request_info", message.trim(), selected)}
         >
           Enviar pedido
         </Button>

@@ -23,7 +23,7 @@ export function createDataSource(
 ): DataSource {
   if (kind === "api") {
     return createApiSource({
-      baseUrl: process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000",
+      baseUrl: "/backend",
     });
   }
   return createMockSource({ persistSession, anyLogin });

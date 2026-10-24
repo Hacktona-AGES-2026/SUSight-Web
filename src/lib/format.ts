@@ -57,3 +57,13 @@ export function relativeDays(from: string, now = new Date()) {
   if (days === 0) return "hoje";
   return `há ${days} ${days === 1 ? "dia" : "dias"}`;
 }
+
+const CNS_MASKED = /^\*{3}\.\*{4}\.\*{4}\.\d{4}$/;
+
+/**
+ * Referência curta do paciente: "CNS •••• 4821" quando há CNS mascarado; senão
+ * o texto como veio (o backend identifica o caso só pela solicitação).
+ */
+export function patientRef(cnsMasked: string) {
+  return CNS_MASKED.test(cnsMasked) ? `CNS ${maskCns(cnsMasked)}` : cnsMasked;
+}
