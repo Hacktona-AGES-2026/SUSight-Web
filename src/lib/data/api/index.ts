@@ -148,6 +148,8 @@ export function createApiSource({ baseUrl }: ApiSourceOptions): DataSource {
     async logout() {
       try {
         await raw("DELETE", "/sessoes");
+      } catch {
+        // Sair nunca falha: com o backend fora do ar ou a sessão já encerrada, o token local some igual.
       } finally {
         sessionStorage.removeItem(SESSION_KEY);
       }
