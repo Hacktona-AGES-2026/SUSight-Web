@@ -23,7 +23,7 @@ A variável `NEXT_PUBLIC_DATA_SOURCE` em `.env.local` escolhe de onde vêm os da
 | `mock` (padrão) | Dados de demonstração em memória, sem backend        |
 | `api`           | SUSight-Backend no endereço de `NEXT_PUBLIC_API_URL` |
 
-No modo mock, o médico de demonstração entra com o identificador `CRM/RJ 52871` e a senha `demo1234`.
+No modo mock, a aplicação aceita qualquer identificador e senha preenchidos (enquanto não há backend). O médico de demonstração é a Dra. Helena Duarte; `CRM/RJ 52871` e `demo1234` são as credenciais usadas nos testes.
 
 ## Comandos
 

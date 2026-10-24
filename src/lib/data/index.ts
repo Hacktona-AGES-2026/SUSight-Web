@@ -16,17 +16,21 @@ export function dataSourceKind(
 
 export function createDataSource(
   kind: DataSourceKind = dataSourceKind(),
-  { persistSession = false }: { persistSession?: boolean } = {},
+  {
+    persistSession = false,
+    anyLogin = false,
+  }: { persistSession?: boolean; anyLogin?: boolean } = {},
 ): DataSource {
   if (kind === "api") {
     return createApiSource({
       baseUrl: process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000",
     });
   }
-  return createMockSource({ persistSession });
+  return createMockSource({ persistSession, anyLogin });
 }
 
 /** Fonte usada pelas telas. */
 export const dataSource = createDataSource(undefined, {
   persistSession: true,
+  anyLogin: true,
 });

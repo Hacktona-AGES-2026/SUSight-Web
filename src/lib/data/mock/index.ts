@@ -45,7 +45,8 @@ function toQueueEntry(e: QueueEntryDetail): QueueEntry {
  */
 export function createMockSource({
   persistSession = false,
-}: { persistSession?: boolean } = {}): DataSource {
+  anyLogin = false,
+}: { persistSession?: boolean; anyLogin?: boolean } = {}): DataSource {
   const proposals = structuredClone(proposalFixtures);
   const queue = structuredClone(queueFixtures);
   // Com `persistSession`, recarregar a página não derruba o login de demonstração.
@@ -90,9 +91,11 @@ export function createMockSource({
 
   return {
     async login({ identifier, password }) {
+      // `anyLogin`: enquanto não há backend, qualquer valor preenchido entra.
       if (
-        identifier !== demoCredentials.identifier ||
-        password !== demoCredentials.password
+        !anyLogin &&
+        (identifier !== demoCredentials.identifier ||
+          password !== demoCredentials.password)
       ) {
         throw new ApiError(401, {
           message: "Não foi possível entrar. Confira os dados e tente de novo.",
