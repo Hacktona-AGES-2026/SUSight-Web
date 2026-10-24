@@ -57,17 +57,50 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
   return (
     <DoctorContext.Provider value={doctor}>
-      <header className="bg-sidebar border-border flex h-10 shrink-0 items-center gap-2.5 border-b px-3.5">
+      <header className="bg-brand-highlight flex h-16 shrink-0 items-center gap-3 px-4 shadow-[0_1px_0_rgba(163,32,91,0.12)] md:px-6">
         <Image
           src="/logo.png"
           alt=""
-          width={18}
-          height={18}
-          className="rounded-md"
+          width={36}
+          height={36}
+          className="rounded-[10px]"
         />
-        <span className="text-note text-subtle-foreground font-semibold">
-          SUSight Clínica
-        </span>
+        <div className="flex min-w-0 flex-col">
+          <span className="text-body text-foreground leading-tight font-bold">
+            SUSight Clínica
+          </span>
+          <span className="text-caption text-brand hidden truncate sm:block">
+            Revisão segura e explicável da fila do SUS
+          </span>
+        </div>
+        <div className="ml-auto flex items-center gap-3">
+          <div className="hidden flex-col items-end leading-tight sm:flex">
+            <span className="text-note text-foreground font-semibold">
+              {doctor.name}
+            </span>
+            {doctor.crm && (
+              <span className="text-caption text-brand">{doctor.crm}</span>
+            )}
+          </div>
+          <span
+            aria-hidden
+            className="bg-brand flex size-9 items-center justify-center rounded-full text-sm font-semibold text-white"
+          >
+            {doctor.name
+              .replace(/^(Dra?\.)\s*/, "")
+              .split(" ")
+              .map((w) => w[0])
+              .slice(0, 2)
+              .join("")}
+          </span>
+          <button
+            type="button"
+            onClick={signOut}
+            className="text-brand bg-background flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-semibold"
+          >
+            <LogOut className="size-3.5" /> Sair
+          </button>
+        </div>
       </header>
       <div className="flex flex-1 flex-col md:flex-row">
         <aside className="bg-sidebar flex shrink-0 flex-col justify-between gap-6 px-2.5 pt-2 pb-4 md:w-58 md:pt-4">
@@ -93,19 +126,6 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               );
             })}
           </nav>
-          <div className="text-note flex flex-col gap-px pl-3">
-            <p className="text-subtle-foreground font-semibold">
-              {doctor.name}
-            </p>
-            {doctor.crm && <p className="text-ink-secondary">{doctor.crm}</p>}
-            <button
-              type="button"
-              onClick={signOut}
-              className="text-brand mt-2 flex w-fit items-center gap-1.5 font-semibold"
-            >
-              <LogOut className="size-3.5" /> Sair
-            </button>
-          </div>
         </aside>
         <main className="flex-1 px-4 py-6 md:px-8 md:py-[72px]">
           <div className="flex max-w-[804px] flex-col gap-4">{children}</div>
