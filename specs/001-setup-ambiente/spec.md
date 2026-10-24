@@ -19,13 +19,13 @@ O SUSight Clínica ainda não tem código. Antes das telas do médico, a equipe 
 
 ## Critérios de aceite
 
-- [ ] Uma pessoa sem contexto sobe a aplicação seguindo só o README.
-- [ ] A página inicial mostra "SUSight Clínica" em português.
-- [ ] Com a fonte em modo mock, a aplicação funciona sem backend rodando.
-- [ ] O contrato da API está documentado e os mocks seguem esse contrato.
-- [ ] Os comandos de lint, checagem de tipos e testes rodam sem erro no projeto limpo.
-- [ ] Existe um teste de exemplo passando.
-- [ ] A estrutura de pastas está descrita no README.
+- [x] Uma pessoa sem contexto sobe a aplicação seguindo só o README.
+- [x] A página inicial mostra "SUSight Clínica" em português.
+- [x] Com a fonte em modo mock, a aplicação funciona sem backend rodando.
+- [x] O contrato da API está documentado e os mocks seguem esse contrato.
+- [x] Os comandos de lint, checagem de tipos e testes rodam sem erro no projeto limpo.
+- [x] Existe um teste de exemplo passando.
+- [x] A estrutura de pastas está descrita no README.
 
 ## Fora do escopo
 
