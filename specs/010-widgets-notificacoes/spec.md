@@ -1,60 +1,64 @@
-# Spec: Widgets e notificações do SUSight Clínica (Windows 11)
+# Spec: Widgets e avisos do médico (Windows 11)
 
-Issue: a criar
+Issue: Hacktona-AGES-2026/SUSight#14
 Status: rascunho
 
 ## Contexto
 
-O médico não fica com o SUSight Clínica aberto o tempo todo. Ele precisa saber, sem abrir o sistema, se há revisões esperando e quando a fila mudou, e ter um atalho para enviar um documento. O Figma mostra isso no painel de widgets do Windows 11 e numa notificação do sistema ("Widget e notificação · Windows 11").
+O médico não fica com o SUSight Clínica aberto o tempo todo. Ele precisa saber, sem abrir o sistema, quantas propostas esperam revisão, ser avisado quando algo pede a sua atenção e ter um atalho para enviar um documento.
+
+Esta spec implementa a parte do médico da spec de widgets do repositório SUSight (`specs/004-widgets`, seção "Médico (Windows)"). Aquela spec é a referência do comportamento.
+
+Design: Figma Hackathona-2026, nó 98-97 ("Painel de widgets e notificações do Windows 11").
 
 ## Comportamento esperado
 
 ### Instalação
 
-- O SUSight Clínica pode ser instalado pelo navegador como aplicativo, com o nome "SUSight Clínica" e o ícone da marca.
-- Instalado, ele abre em janela própria, sem a barra do navegador.
+- O SUSight Clínica pode ser instalado pelo navegador como aplicativo, com o nome "SUSight Clínica" e o ícone da marca. Instalado, ele abre em janela própria.
 - Em navegadores ou sistemas sem suporte a widgets, o sistema funciona normalmente, só sem os widgets.
 
-### Widget no painel do Windows 11
+### Widgets no painel do Windows 11
 
-- Com o aplicativo instalado pelo Microsoft Edge no Windows 11, o médico pode adicionar o widget "SUSight Clínica" ao painel de widgets.
-- O widget mostra três linhas, cada uma com ícone, título, texto de apoio e uma seta:
-  - "Enviar documento" · "Arraste um exame ou laudo aqui". Abre o envio de documento (spec 008).
-  - "<N> revisões pendentes" · "A mais antiga espera há <X> dias". Abre as revisões pendentes (spec 003). Sem pendências, mostra "Nenhuma revisão pendente".
-  - "Fila atualizada hoje" · "Aprovada às <hora> por <você ou nome do médico>". Abre a fila do SUS (spec 005). Se a última aprovação não foi hoje, mostra "Fila atualizada em <data>".
-- O widget não mostra nome, CNS nem dado clínico de pacientes, porque o painel pode ficar visível para outras pessoas. Mostra só números, datas e nomes de médicos.
-- Sem sessão, o widget mostra "Entre no SUSight Clínica para ver suas revisões" e abre o login.
-- O widget se atualiza sozinho de tempos em tempos e sempre que o painel é aberto.
+- Com o aplicativo instalado pelo Microsoft Edge no Windows 11, o médico pode adicionar dois widgets ao painel:
+  - **"Aprovações":** o número de propostas esperando revisão (ex.: "3") com "propostas para revisar" e o botão "Revisar", que abre as revisões pendentes (spec 003). Sem pendências, mostra "0" e "nenhuma proposta para revisar".
+  - **"Enviar documento":** atalho que abre o envio de documento (spec 008).
+- Sem sessão, o widget "Aprovações" mostra "Entre no SUSight Clínica para ver suas revisões" e o botão abre o login.
+- Os widgets se atualizam sozinhos de tempos em tempos e sempre que o painel é aberto.
+- Os widgets nunca aprovam nem rejeitam nada (constituição, itens 1 e 2).
 
-### Notificações do sistema
+### Avisos (notificações do sistema)
 
-- Na primeira vez que o médico aprova uma fila, o sistema explica para que servem as notificações e pede permissão. O médico pode recusar sem perder nenhuma função.
-- Depois de aprovar uma nova fila (spec 004), o sistema mostra a notificação "Nova fila aprovada · A fila do SUS foi atualizada e os pacientes serão avisados."
-- Clicar na notificação abre a fila do SUS.
-- As notificações não mostram nome, CNS nem dado clínico de pacientes.
+- O médico recebe avisos do SUSight Clínica mesmo com o sistema fechado:
+  - **"Nova proposta":** o nome do paciente e o botão "Revisar", que abre a revisão daquela proposta;
+  - **"Fila atualizada":** quantos pacientes foram avisados (ex.: "3 pacientes avisados");
+  - **"Paciente respondeu":** quem respondeu a um pedido de informações e o que enviou (ex.: "Rita enviou o raio-X") e o botão "Abrir", que abre a proposta.
+- Clicar no aviso ou no botão abre a tela correspondente. O aviso nunca toma uma decisão.
+- Na primeira vez, o sistema explica para que servem os avisos e pede permissão. O médico pode recusar sem perder nenhuma função.
+- Os avisos mostram o mínimo de dados pessoais necessários para identificar a proposta (LGPD). Nunca mostram CNS nem dado clínico.
 
 ## Critérios de aceite
 
 - [ ] O navegador oferece instalar o SUSight Clínica, com nome e ícone da marca.
-- [ ] No Windows 11 com Edge, o widget aparece no painel e mostra as três linhas com dados reais da sessão.
-- [ ] Cada linha do widget abre a tela certa do sistema.
-- [ ] O número de revisões e o tempo da mais antiga batem com a lista de revisões pendentes.
-- [ ] Sem sessão, o widget mostra o convite para entrar e não mostra dados.
-- [ ] Nenhum widget ou notificação mostra nome, CNS ou dado clínico de paciente.
-- [ ] Aprovar uma fila mostra a notificação "Nova fila aprovada" quando há permissão, e nada quebra quando não há.
-- [ ] Clicar na notificação abre a fila do SUS.
-- [ ] Em navegadores sem suporte a widgets, o sistema funciona normalmente.
+- [ ] No Windows 11 com Edge, os widgets "Aprovações" e "Enviar documento" aparecem no painel.
+- [ ] O widget "Aprovações" mostra o mesmo número da lista de revisões pendentes, e "Revisar" abre a lista.
+- [ ] "Enviar documento" abre o envio de documento.
+- [ ] Sem sessão, o widget não mostra dados e leva ao login.
+- [ ] O médico recebe "Nova proposta", "Fila atualizada" e "Paciente respondeu" com o sistema fechado, quando deu permissão.
+- [ ] Clicar no aviso ou no botão abre a tela correspondente, e nenhum aviso aprova ou rejeita.
+- [ ] Nenhum widget ou aviso mostra CNS ou dado clínico.
+- [ ] Recusar a permissão não quebra nada, e navegadores sem suporte a widgets funcionam normalmente.
+- [ ] Os widgets e os avisos são lidos corretamente por leitores de tela (Narrador do Windows).
 
 ## Fora do escopo
 
-- Widgets no macOS, no Linux ou em outros painéis.
+- Widgets no macOS e no Linux.
 - Aplicativo desktop nativo (Electron, Tauri).
-- Notificações com o sistema fechado, enviadas pelo backend (ex.: quando outro médico aprova a fila). Dependem de envio de push no SUSight-Backend e podem virar uma spec própria.
-- Arrastar arquivos direto para o widget. A linha "Enviar documento" abre o envio no sistema.
+- Aprovar ou rejeitar direto do widget ou do aviso.
+- Arrastar arquivos para o widget.
 
 ## Questões em aberto
 
-- O texto "Arraste um exame ou laudo aqui" promete arrastar para o widget, o que o painel do Windows não permite. Trocar por "Envie um exame ou laudo"?
-- O médico deve ser avisado também quando chega uma nova revisão pendente?
-- O widget mostra os dados da unidade do médico ou de todas as unidades?
-- De quanto em quanto tempo o widget deve se atualizar?
+- Os avisos mostram o nome completo do paciente, como no Figma ("Marina Albuquerque"), ou só o primeiro nome ou iniciais? A spec 004 do SUSight deixa isso em aberto.
+- O backend envia os avisos (ele sabe quando há nova proposta ou resposta do paciente) ou o web envia?
+- De quanto em quanto tempo os widgets devem se atualizar?
