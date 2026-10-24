@@ -36,6 +36,10 @@ Além de revisar propostas, o médico precisa ver a fila do SUS inteira, entende
 - [ ] Não é possível abrir uma segunda contestação para o mesmo paciente enquanto a primeira está em andamento.
 - [ ] Fila vazia ou falha ao carregar mostram mensagem em português.
 
+## Testes (TDD)
+
+Os testes vêm antes do código. Cada critério de aceite acima vira pelo menos um teste automatizado que falha primeiro (red), e a implementação só termina quando todos passam (green). Critério que não puder ser testado automaticamente leva uma justificativa escrita. Testes de unidade e de ponta a ponta no navegador (spec 007).
+
 ## Fora do escopo
 
 - Reordenar a fila manualmente.

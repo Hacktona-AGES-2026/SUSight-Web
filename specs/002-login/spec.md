@@ -29,6 +29,10 @@ O SUSight Clínica mostra dados de saúde de pacientes e registra decisões em n
 - [ ] Sessão expirada leva ao login com aviso e retorna à tela anterior após entrar.
 - [ ] Falha de rede mostra "Não foi possível conectar. Tente novamente." sem perder o que foi digitado.
 
+## Testes (TDD)
+
+Os testes vêm antes do código. Cada critério de aceite acima vira pelo menos um teste automatizado que falha primeiro (red), e a implementação só termina quando todos passam (green). Critério que não puder ser testado automaticamente leva uma justificativa escrita. Testes de unidade e de ponta a ponta no navegador (spec 007).
+
 ## Fora do escopo
 
 - Cadastro de médicos, recuperação de senha e troca de senha.

@@ -27,6 +27,10 @@ O SUSight Clínica ainda não tem código. Antes das telas do médico, a equipe 
 - [x] Existe um teste de exemplo passando.
 - [x] A estrutura de pastas está descrita no README.
 
+## Testes (TDD)
+
+Os testes vêm antes do código. Cada critério de aceite acima vira pelo menos um teste automatizado que falha primeiro (red), e a implementação só termina quando todos passam (green). Critério que não puder ser testado automaticamente leva uma justificativa escrita. Testes de unidade e de ponta a ponta no navegador (spec 007).
+
 ## Fora do escopo
 
 - Telas de login, revisões, fila e export (specs 002 a 006).

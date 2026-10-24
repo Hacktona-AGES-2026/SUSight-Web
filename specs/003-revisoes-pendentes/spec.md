@@ -42,6 +42,10 @@ A IA analisa exames e laudos dos pacientes e propõe mudanças de posição na f
 - [ ] Falha ao carregar mostra mensagem em português e opção de tentar de novo.
 - [ ] Proposta que outro médico já decidiu mostra "Esta proposta já foi decidida por <nome> em <data e hora>." e não aceita nova decisão.
 
+## Testes (TDD)
+
+Os testes vêm antes do código. Cada critério de aceite acima vira pelo menos um teste automatizado que falha primeiro (red), e a implementação só termina quando todos passam (green). Critério que não puder ser testado automaticamente leva uma justificativa escrita. Testes de unidade e de ponta a ponta no navegador (spec 007).
+
 ## Fora do escopo
 
 - Tomar a decisão (spec 004).

@@ -48,6 +48,10 @@ Os avisos aparecem como "SUSight Clínica" e têm um botão que abre o item corr
 - [ ] Sem conexão, o widget mostra o último número conhecido com a hora.
 - [ ] Textos em português do Brasil, em linguagem simples.
 
+## Testes (TDD)
+
+Os testes vêm antes do código. Cada critério de aceite acima vira pelo menos um teste automatizado que falha primeiro (red), e a implementação só termina quando todos passam (green). Critério que não puder ser testado automaticamente leva uma justificativa escrita. Testes de unidade e de ponta a ponta no navegador (spec 007).
+
 ## Fora do escopo
 
 - Aprovar ou rejeitar direto do widget ou do aviso.
