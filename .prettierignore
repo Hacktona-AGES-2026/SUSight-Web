@@ -1,0 +1,6 @@
+pnpm-lock.yaml
+next-env.d.ts
+src/lib/api/schema.ts
+docs/
+specs/
+pnpm-workspace.yaml
