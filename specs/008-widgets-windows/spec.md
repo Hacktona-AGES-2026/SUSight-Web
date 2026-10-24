@@ -1,6 +1,6 @@
 # Spec: Widgets e avisos do Windows
 
-Issue: a criar
+Issue: Hacktona-AGES-2026/SUSight#35
 Status: rascunho
 
 ## Contexto
@@ -62,4 +62,3 @@ Os avisos aparecem como "SUSight Clínica" e têm um botão que abre o item corr
 - Windows 11 é o único alvo no MVP? Widgets e avisos no painel do Windows normalmente pedem um aplicativo instalado. Como isso funciona se o Pulse Clinical é web?
 - O widget respeita as mesmas exigências de acesso do login do médico (gov.br, CRM, senha e código de 6 dígitos)?
 - O médico vê avisos de todas as propostas ou só das suas especialidades e unidades? (Mesma dúvida da spec 003.)
-- A spec 003 deste repositório cita "relato" do paciente. No SUSight (paciente), a decisão atual é que a análise vem só de exames e laudos, sem relato do paciente. Alinhar o texto da spec 003.
