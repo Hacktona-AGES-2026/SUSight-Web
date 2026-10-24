@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button";
 import { TextField } from "@/components/field";
 import { Notice } from "@/components/notice";
 import { dataSource } from "@/lib/data";
-import { demoCredentials } from "@/lib/data/mock/fixtures";
 import { errorMessage } from "@/lib/use-data";
 
 /** Só aceita caminhos internos, para não redirecionar para outro site. */
@@ -72,7 +71,7 @@ export function LoginForm() {
             Entrar no SUSight Clínica
           </h1>
           <p className="text-subtitle text-ink-secondary">
-            Use sua conta gov.br ou seu registro profissional.
+            Use seu registro profissional.
           </p>
           {params.get("expirou") && (
             <Notice
@@ -80,18 +79,6 @@ export function LoginForm() {
               tone="warning"
             />
           )}
-          {/* ponytail: gov.br simulado, entra com o médico de demonstração até haver integração (spec 002) */}
-          <button
-            type="button"
-            disabled={sending}
-            onClick={() => enter(demoCredentials)}
-            className="text-body h-14 w-full rounded-[28px] bg-[#111] font-semibold text-white disabled:opacity-60"
-          >
-            Entrar com gov.br
-          </button>
-          <p className="text-note text-ink-secondary text-center">
-            ou entre com seu CRM
-          </p>
           <TextField
             label="CRM e UF"
             value={identifier}
