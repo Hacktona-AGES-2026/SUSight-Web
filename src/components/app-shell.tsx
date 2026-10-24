@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useContext } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import {
@@ -56,6 +57,18 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
   return (
     <DoctorContext.Provider value={doctor}>
+      <header className="bg-sidebar border-border flex h-10 shrink-0 items-center gap-2.5 border-b px-3.5">
+        <Image
+          src="/logo.png"
+          alt=""
+          width={18}
+          height={18}
+          className="rounded-md"
+        />
+        <span className="text-note text-subtle-foreground font-semibold">
+          SUSight Clínica
+        </span>
+      </header>
       <div className="flex flex-1 flex-col md:flex-row">
         <aside className="bg-sidebar flex shrink-0 flex-col justify-between gap-6 px-2.5 pt-2 pb-4 md:w-58 md:pt-4">
           <nav aria-label="Principal" className="flex flex-col gap-0.5">

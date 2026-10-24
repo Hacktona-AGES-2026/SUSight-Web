@@ -2,10 +2,9 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import { ClipboardCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Chip } from "@/components/chip";
-import { ErrorNotice, Notice } from "@/components/notice";
+import { ErrorNotice } from "@/components/notice";
 import { PageHeader } from "@/components/page-header";
 import { Segmented } from "@/components/segmented";
 import { SelectField, TextField } from "@/components/field";
@@ -117,11 +116,6 @@ export function PendingReviews() {
           waiting={tab === "awaiting_patient"}
         />
       ))}
-
-      <Notice title="A IA só propõe" icon={ClipboardCheck}>
-        Cada decisão exige a aprovação de um profissional e fica registrada com
-        data e hora.
-      </Notice>
     </>
   );
 }
