@@ -286,6 +286,7 @@ export function entryFrom(
   return {
     position: row.posicao,
     patient: patientFromRow(row, now),
+    justification: row.justificativa || undefined,
     lastPositionChangeAt: null,
     status: row.em_reavaliacao
       ? "under_review"

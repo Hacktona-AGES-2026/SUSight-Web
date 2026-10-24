@@ -637,6 +637,8 @@ export interface components {
             /** Format: date-time */
             lastPositionChangeAt: string | null;
             status: components["schemas"]["QueueStatus"];
+            /** @description Por que o paciente está nesta posição; vai para o CSV exportado */
+            justification?: string;
         };
         QueueList: {
             total: number;

@@ -4,11 +4,12 @@ import { buildQueueCsv, csvFileName } from "./csv";
 
 const entry = (position: number, procedure: string): QueueEntry => ({
   position,
+  justification: `Justificativa ${position}, com vírgula.`,
   lastPositionChangeAt: null,
   status: "none",
   patient: {
-    id: `pac-${position}`,
-    name: "Fulana",
+    id: `SOL-${position}`,
+    name: "Fulana de Tal",
     cnsMasked: "***.****.****.1234",
     procedure,
     priority: "Alta",
@@ -25,14 +26,24 @@ test("CSV tem BOM, cabeçalho, uma linha por paciente e a ordem recebida", () =>
 
   expect(csv.startsWith("﻿")).toBe(true);
   expect(lines).toHaveLength(3);
-  expect(lines[1]).toBe("1;pac-1;Catarata;Alta;10;2026-10-14;");
-  expect(lines[2].startsWith("2;pac-2;Hérnia")).toBe(true);
+  expect(lines[0]).toBe(
+    "solicitacao_id,posicao,justificativa,nome_paciente,procedimento,prioridade,espera_dias,data_entrada,ultima_alteracao",
+  );
+  expect(lines[1]).toBe(
+    'SOL-1,1,"Justificativa 1, com vírgula.",Fulana de Tal,Catarata,Alta,10,2026-10-14,',
+  );
+  expect(lines[2].startsWith("SOL-2,2,")).toBe(true);
 });
 
 test("campos com separador, aspas ou quebra de linha não quebram as colunas", () => {
-  const csv = buildQueueCsv([entry(1, 'Corte; "teste"\nlinha')]);
+  const csv = buildQueueCsv([entry(1, 'Corte, "teste"\nlinha')]);
 
-  expect(csv).toContain('"Corte; ""teste""\nlinha"');
+  expect(csv).toContain('"Corte, ""teste""\nlinha"');
+});
+
+test("tem as três colunas que o desafio exige, nas primeiras posições", () => {
+  const header = buildQueueCsv([]).replace("﻿", "").split("\r\n")[0].split(",");
+  expect(header.slice(0, 3)).toEqual(["solicitacao_id", "posicao", "justificativa"]);
 });
 
 test("fila vazia gera só o cabeçalho", () => {
