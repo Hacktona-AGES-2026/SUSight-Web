@@ -10,6 +10,12 @@ const tones = {
 
 export type ChipTone = keyof typeof tones;
 
+export const priorityTone: Record<"Alta" | "Moderada" | "Baixa", ChipTone> = {
+  Alta: "danger",
+  Moderada: "warning",
+  Baixa: "gray",
+};
+
 export function Chip({
   tone = "neutral",
   className,
