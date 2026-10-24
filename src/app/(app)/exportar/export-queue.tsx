@@ -91,7 +91,7 @@ export function ExportQueue() {
       </div>
 
       <SectionTitle>Prévia das primeiras linhas</SectionTitle>
-      <pre className="bg-card border-border text-note text-subtle-foreground overflow-x-auto rounded-[10px] border px-5 py-[18px] leading-[26px]">
+      <pre className="bg-card border-border text-note text-subtle-foreground overflow-x-auto rounded-[10px] border px-5 py-[18px] font-sans leading-[26px]">
         {preview.join("\n")}
       </pre>
 

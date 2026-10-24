@@ -1,5 +1,5 @@
 import { Check } from "lucide-react";
-import { cn } from "cn";
+import { cn } from "@/lib/utils";
 
 /** Opção de escolha do Figma: radio (uma opção) ou caixa (várias). */
 export function Choice({

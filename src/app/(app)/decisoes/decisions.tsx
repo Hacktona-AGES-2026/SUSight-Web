@@ -7,7 +7,7 @@ import { dataSource } from "@/lib/data";
 import { formatDay, formatTime } from "@/lib/format";
 import { eventDetail, eventTitle } from "@/lib/history";
 import { useData } from "@/lib/use-data";
-import { cn } from "cn";
+import { cn } from "@/lib/utils";
 
 type Entry = HistoryEvent & { patient: string };
 

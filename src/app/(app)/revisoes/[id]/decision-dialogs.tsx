@@ -32,9 +32,8 @@ export function ApproveDialog({ proposal, open, onOpenChange }: DialogProps) {
         <DialogTitle>Aprovar nova fila?</DialogTitle>
         <DialogDescription>
           A fila do SUS será atualizada ({ordinal(proposal.currentPosition)} →{" "}
-          {ordinal(proposal.proposedPosition)}) e {proposal.patient.name} será
-          avisado da nova posição. A decisão fica registrada com seu nome, data
-          e hora.
+          {ordinal(proposal.proposedPosition)}) e o paciente será avisado da
+          nova posição. A decisão fica registrada com seu nome, data e hora.
         </DialogDescription>
         {caveat && (
           <Notice title="Antes de aprovar" tone="warning" icon={TriangleAlert}>

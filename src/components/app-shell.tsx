@@ -11,7 +11,7 @@ import {
   LogOut,
   Upload,
 } from "lucide-react";
-import { cn } from "cn";
+import { cn } from "@/lib/utils";
 import type { Doctor } from "@/lib/api/types";
 import { dataSource } from "@/lib/data";
 import { useData } from "@/lib/use-data";

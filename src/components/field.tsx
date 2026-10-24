@@ -1,5 +1,5 @@
 import { useId } from "react";
-import { cn } from "cn";
+import { cn } from "@/lib/utils";
 
 const box =
   "bg-background border-border focus-visible:ring-ring/50 focus-visible:border-ring w-full rounded-2xl border px-4 py-3.5 text-body outline-none focus-visible:ring-3";

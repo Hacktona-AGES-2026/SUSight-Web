@@ -1,5 +1,5 @@
 import { Info } from "lucide-react";
-import { cn } from "cn";
+import { cn } from "@/lib/utils";
 
 const tones = {
   brand: { box: "bg-brand-soft", title: "text-brand" },
