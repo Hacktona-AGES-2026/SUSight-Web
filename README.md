@@ -1,5 +1,7 @@
 # SUSight-Web
 
+> Decisões do projeto (abordagem, usuário, por quê e o que ficou de fora): [DECISOES.md](DECISOES.md).
+
 SUSight Clínica: aplicação web para o médico revisar propostas de fila, decidir e exportar a fila ordenada em CSV.
 
 ## Como rodar
