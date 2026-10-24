@@ -127,7 +127,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             })}
           </nav>
         </aside>
-        <main className="flex-1 px-4 py-6 md:px-8 md:py-[72px]">
+        <main className="flex-1 px-4 py-6 md:px-8 md:py-8">
           <div className="flex max-w-[804px] flex-col gap-4">{children}</div>
         </main>
       </div>
