@@ -22,7 +22,7 @@ Com o backend em `http://127.0.0.1:8000` (veja o README dele; `tools/seed_demo.p
 NEXT_PUBLIC_DATA_SOURCE=api BACKEND_URL=http://127.0.0.1:8000 pnpm dev
 ```
 
-O navegador chama `/backend/*` e o Next repassa ao backend (sem CORS). Entre com a conta do backend, por exemplo `medico-demo` e `demo1234`, nos campos "CRM e UF" e "Senha". O backend não traz nome, CNS nem procedimento do paciente: o web mostra o paciente pela solicitação e deriva o procedimento do CID. Remover da fila, enviar documento e decisões registradas continuam só na tela (spec 009).
+O navegador chama `/backend/*` e o Next repassa ao backend (sem CORS). Entre com a conta do backend, por exemplo `medico-demo` e `demo1234`, nos campos "Usuário" e "Senha". A fila é única: todo médico vê todos os pacientes. O nome e o procedimento aparecem quando a fila foi importada com eles (`tools/import_dataset_queue.py` do backend); sem isso, o web mostra o paciente pela solicitação e deriva o procedimento do CID. A tela atualiza sozinha a cada 5 s. Remover da fila, enviar documento e decisões registradas continuam só na tela (spec 009).
 
 ### Fonte de dados
 
