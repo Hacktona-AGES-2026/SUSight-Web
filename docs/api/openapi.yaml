@@ -617,6 +617,9 @@ components:
           format: date-time
         status:
           $ref: '#/components/schemas/QueueStatus'
+        justification:
+          type: string
+          description: Por que o paciente está nesta posição; vai para o CSV exportado
 
     QueueList:
       type: object

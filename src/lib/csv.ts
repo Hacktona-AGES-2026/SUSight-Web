@@ -1,13 +1,17 @@
 import type { QueueEntry } from "@/lib/api/types";
 import { daysSince } from "./format";
 
-// Ponto e vírgula e BOM: abre com acentos no Excel e no LibreOffice em português.
-const SEPARATOR = ";";
+// Vírgula, como no fila_priorizada.csv do desafio (o verificador oficial lê com pandas). O BOM mantém os
+// acentos no Excel; o pandas o ignora.
+const SEPARATOR = ",";
 const BOM = "﻿";
 
+// As três primeiras colunas são o formato do fila_priorizada.csv do desafio; as demais ajudam quem lê.
 export const CSV_HEADER = [
+  "solicitacao_id",
   "posicao",
-  "paciente_id",
+  "justificativa",
+  "nome_paciente",
   "procedimento",
   "prioridade",
   "espera_dias",
@@ -17,7 +21,7 @@ export const CSV_HEADER = [
 
 function escapeField(value: string | number) {
   const text = String(value);
-  return /[;"\n\r]/.test(text) ? `"${text.replaceAll('"', '""')}"` : text;
+  return /[,"\n\r]/.test(text) ? `"${text.replaceAll('"', '""')}"` : text;
 }
 
 /** Linhas do CSV (cabeçalho + uma por paciente), na ordem recebida. */
@@ -25,8 +29,10 @@ export function queueCsvRows(entries: QueueEntry[], now = new Date()) {
   return [
     CSV_HEADER,
     ...entries.map((e) => [
-      e.position,
       e.patient.id,
+      e.position,
+      e.justification ?? "",
+      e.patient.name,
       e.patient.procedure,
       e.patient.priority,
       daysSince(e.patient.waitingSince, now),
