@@ -1,0 +1,668 @@
+openapi: 3.1.0
+info:
+  title: SUSight API (contrato do SUSight Clínica)
+  version: 0.1.0
+  description: |
+    Contrato entre o SUSight Clínica (SUSight-Web) e o SUSight-Backend.
+    É a referência para os dados de demonstração (mock) e para a implementação do backend.
+
+    Regras gerais:
+    - O CNS completo nunca é enviado ao web. Só trafega `cnsMasked` (ex.: `***.****.****.1234`).
+    - Mensagens de erro vêm em português do Brasil, no campo `message`.
+    - Datas e horas em ISO 8601 com fuso (ex.: `2026-10-24T14:30:00-03:00`).
+    - A IA só propõe: nenhuma rota muda a fila sem uma decisão `approve` de um médico.
+
+servers:
+  - url: http://localhost:8000
+    description: Backend local
+
+security:
+  - bearerAuth: []
+
+tags:
+  - name: auth
+    description: Sessão do médico (spec 002)
+  - name: proposals
+    description: Revisões pendentes e decisões (specs 003 e 004)
+  - name: queue
+    description: Fila do SUS e contestação (spec 005)
+  - name: exports
+    description: Registro de export CSV (spec 006)
+
+paths:
+  /auth/login:
+    post:
+      tags: [auth]
+      summary: Entrar
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: Sessão criada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Session'
+        '401':
+          description: Credenciais inválidas (mensagem genérica, sem indicar o campo)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /auth/logout:
+    post:
+      tags: [auth]
+      summary: Sair
+      responses:
+        '204':
+          description: Sessão encerrada
+
+  /auth/me:
+    get:
+      tags: [auth]
+      summary: Médico da sessão atual
+      responses:
+        '200':
+          description: Médico logado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Doctor'
+        '401':
+          $ref: '#/components/responses/SessionExpired'
+
+  /proposals:
+    get:
+      tags: [proposals]
+      summary: Listar propostas
+      description: Ordenadas da mais antiga para a mais nova (`createdAt` crescente).
+      parameters:
+        - name: status
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/ProposalStatus'
+          description: Padrão `pending`.
+      responses:
+        '200':
+          description: Lista de propostas
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProposalList'
+        '401':
+          $ref: '#/components/responses/SessionExpired'
+
+  /proposals/{proposalId}:
+    get:
+      tags: [proposals]
+      summary: Detalhe da proposta
+      parameters:
+        - $ref: '#/components/parameters/ProposalId'
+      responses:
+        '200':
+          description: Proposta com critérios, documentos, tribunal, equidade e histórico
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProposalDetail'
+        '401':
+          $ref: '#/components/responses/SessionExpired'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /proposals/{proposalId}/decision:
+    post:
+      tags: [proposals]
+      summary: Decidir sobre a proposta
+      description: |
+        `approve` atualiza a fila e avisa o paciente. `reject` devolve para a IA com o motivo.
+        `request_info` envia a mensagem ao paciente e move a proposta para `awaiting_patient`.
+        Uma proposta só recebe uma decisão.
+      parameters:
+        - $ref: '#/components/parameters/ProposalId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DecisionRequest'
+      responses:
+        '201':
+          description: Decisão registrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Decision'
+        '400':
+          description: Texto obrigatório ausente (reject e request_info)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          $ref: '#/components/responses/SessionExpired'
+        '409':
+          description: Proposta já decidida por outro médico
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlreadyDecidedError'
+
+  /queue:
+    get:
+      tags: [queue]
+      summary: Fila do SUS na ordem atual
+      description: Só reflete mudanças aprovadas. Propostas pendentes e contestações não alteram a ordem.
+      responses:
+        '200':
+          description: Fila ordenada por `position`
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QueueList'
+        '401':
+          $ref: '#/components/responses/SessionExpired'
+
+  /queue/{patientId}:
+    get:
+      tags: [queue]
+      summary: Detalhe do paciente na fila
+      parameters:
+        - $ref: '#/components/parameters/PatientId'
+      responses:
+        '200':
+          description: Critérios atuais, justificativa da posição e histórico
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QueueEntryDetail'
+        '401':
+          $ref: '#/components/responses/SessionExpired'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /queue/{patientId}/contest:
+    post:
+      tags: [queue]
+      summary: Contestar a posição
+      description: Não muda a fila. Marca o paciente como `under_review` até a IA responder.
+      parameters:
+        - $ref: '#/components/parameters/PatientId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ContestRequest'
+      responses:
+        '201':
+          description: Contestação registrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HistoryEvent'
+        '400':
+          description: Justificativa vazia
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          $ref: '#/components/responses/SessionExpired'
+        '409':
+          description: Já existe contestação em andamento para este paciente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /exports:
+    post:
+      tags: [exports]
+      summary: Registrar export CSV
+      description: O CSV é gerado no web a partir de `GET /queue`. Esta rota só registra quem exportou e quando.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExportRequest'
+      responses:
+        '201':
+          description: Export registrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExportRecord'
+        '401':
+          $ref: '#/components/responses/SessionExpired'
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+
+  parameters:
+    ProposalId:
+      name: proposalId
+      in: path
+      required: true
+      schema:
+        type: string
+    PatientId:
+      name: patientId
+      in: path
+      required: true
+      schema:
+        type: string
+
+  responses:
+    SessionExpired:
+      description: Sessão ausente ou expirada
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Recurso não encontrado
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+  schemas:
+    Error:
+      type: object
+      required: [message]
+      properties:
+        message:
+          type: string
+          example: Não foi possível conectar. Tente novamente.
+
+    AlreadyDecidedError:
+      allOf:
+        - $ref: '#/components/schemas/Error'
+        - type: object
+          required: [decidedBy, decidedAt]
+          properties:
+            decidedBy:
+              $ref: '#/components/schemas/Doctor'
+            decidedAt:
+              type: string
+              format: date-time
+
+    LoginRequest:
+      type: object
+      required: [identifier, password]
+      properties:
+        identifier:
+          type: string
+          description: CRM ou e-mail do médico
+        password:
+          type: string
+          format: password
+
+    Session:
+      type: object
+      required: [token, expiresAt, doctor]
+      properties:
+        token:
+          type: string
+        expiresAt:
+          type: string
+          format: date-time
+        doctor:
+          $ref: '#/components/schemas/Doctor'
+
+    Doctor:
+      type: object
+      required: [id, name]
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+          example: Dra. Ana Souza
+        crm:
+          type: string
+          example: CRM/RS 12345
+
+    Priority:
+      type: string
+      enum: [Baixa, Moderada, Alta]
+      description: Prioridade validada pela regulação
+
+    PatientSummary:
+      type: object
+      required: [id, name, cnsMasked, procedure, priority, waitingSince]
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        cnsMasked:
+          type: string
+          pattern: '^\*{3}\.\*{4}\.\*{4}\.\d{4}$'
+          example: '***.****.****.1234'
+        procedure:
+          type: string
+          example: Artroplastia total de joelho
+        priority:
+          $ref: '#/components/schemas/Priority'
+        waitingSince:
+          type: string
+          format: date
+          description: Data de entrada na fila
+
+    ProposalStatus:
+      type: string
+      enum: [pending, awaiting_patient, approved, rejected]
+
+    CriterionKey:
+      type: string
+      enum:
+        - limitacao_funcional
+        - asa
+        - dor
+        - socioeconomico
+        - comorbidades
+        - tempo_espera
+        - deterioracao
+
+    Criterion:
+      type: object
+      required: [key, label, value]
+      properties:
+        key:
+          $ref: '#/components/schemas/CriterionKey'
+        label:
+          type: string
+          example: Dor
+        value:
+          type: string
+          description: Valor atual legível
+          example: 8/10
+        previousValue:
+          type: [string, 'null']
+          description: Valor na última avaliação; `null` se não houve
+          example: 5/10
+
+    DocumentKind:
+      type: string
+      enum: [exam, report, patient_statement]
+      description: '`patient_statement` é relato do paciente e não substitui exame'
+
+    SourceDocument:
+      type: object
+      required: [id, kind, title, receivedAt]
+      properties:
+        id:
+          type: string
+        kind:
+          $ref: '#/components/schemas/DocumentKind'
+        title:
+          type: string
+        receivedAt:
+          type: string
+          format: date-time
+        summary:
+          type: string
+
+    TribunalAgent:
+      type: string
+      enum: [evidencias, contestacao, equidade]
+
+    TribunalOpinion:
+      type: object
+      required: [agent, label, opinion]
+      properties:
+        agent:
+          $ref: '#/components/schemas/TribunalAgent'
+        label:
+          type: string
+          example: Equidade e regras
+        opinion:
+          type: string
+
+    EquityCheck:
+      type: object
+      required: [rule, label, passed, detail]
+      properties:
+        rule:
+          type: string
+          enum: [max_elevation, no_overtake_higher_priority]
+        label:
+          type: string
+          example: Limite de elevação por reavaliação
+        passed:
+          type: boolean
+        detail:
+          type: string
+
+    HistoryEventType:
+      type: string
+      enum: [approve, reject, request_info, patient_reply, contest, contest_result, position_change]
+
+    HistoryEvent:
+      type: object
+      required: [id, type, at]
+      properties:
+        id:
+          type: string
+        type:
+          $ref: '#/components/schemas/HistoryEventType'
+        text:
+          type: string
+        by:
+          $ref: '#/components/schemas/Doctor'
+        at:
+          type: string
+          format: date-time
+        fromPosition:
+          type: integer
+        toPosition:
+          type: integer
+
+    ProposalSummary:
+      type: object
+      required: [id, status, patient, currentPosition, proposedPosition, reasonSummary, createdAt]
+      properties:
+        id:
+          type: string
+        status:
+          $ref: '#/components/schemas/ProposalStatus'
+        patient:
+          $ref: '#/components/schemas/PatientSummary'
+        currentPosition:
+          type: integer
+          minimum: 1
+        proposedPosition:
+          type: integer
+          minimum: 1
+        reasonSummary:
+          type: string
+          description: Motivo resumido da IA
+        createdAt:
+          type: string
+          format: date-time
+        infoRequest:
+          description: Presente quando `status` é `awaiting_patient`
+          type: object
+          required: [message, requestedAt]
+          properties:
+            message:
+              type: string
+            requestedAt:
+              type: string
+              format: date-time
+
+    ProposalList:
+      type: object
+      required: [total, items]
+      properties:
+        total:
+          type: integer
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProposalSummary'
+
+    ProposalDetail:
+      allOf:
+        - $ref: '#/components/schemas/ProposalSummary'
+        - type: object
+          required: [criteria, documents, tribunal, equityChecks, history]
+          properties:
+            criteria:
+              type: array
+              items:
+                $ref: '#/components/schemas/Criterion'
+            documents:
+              type: array
+              items:
+                $ref: '#/components/schemas/SourceDocument'
+            tribunal:
+              type: array
+              items:
+                $ref: '#/components/schemas/TribunalOpinion'
+            equityChecks:
+              type: array
+              items:
+                $ref: '#/components/schemas/EquityCheck'
+            history:
+              type: array
+              items:
+                $ref: '#/components/schemas/HistoryEvent'
+            decidedBy:
+              $ref: '#/components/schemas/Doctor'
+            decidedAt:
+              type: string
+              format: date-time
+
+    DecisionType:
+      type: string
+      enum: [approve, reject, request_info]
+
+    DecisionRequest:
+      type: object
+      required: [type]
+      properties:
+        type:
+          $ref: '#/components/schemas/DecisionType'
+        text:
+          type: string
+          description: Obrigatório para `reject` (motivo) e `request_info` (mensagem ao paciente)
+
+    Decision:
+      type: object
+      required: [id, proposalId, type, by, at]
+      properties:
+        id:
+          type: string
+        proposalId:
+          type: string
+        type:
+          $ref: '#/components/schemas/DecisionType'
+        text:
+          type: string
+        by:
+          $ref: '#/components/schemas/Doctor'
+        at:
+          type: string
+          format: date-time
+
+    QueueStatus:
+      type: string
+      enum: [none, pending_proposal, under_review]
+      description: '`under_review` = contestação em andamento ("Em reavaliação")'
+
+    QueueEntry:
+      type: object
+      required: [position, patient, lastPositionChangeAt, status]
+      properties:
+        position:
+          type: integer
+          minimum: 1
+        patient:
+          $ref: '#/components/schemas/PatientSummary'
+        lastPositionChangeAt:
+          type: [string, 'null']
+          format: date-time
+        status:
+          $ref: '#/components/schemas/QueueStatus'
+
+    QueueList:
+      type: object
+      required: [total, items]
+      properties:
+        total:
+          type: integer
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/QueueEntry'
+
+    QueueEntryDetail:
+      allOf:
+        - $ref: '#/components/schemas/QueueEntry'
+        - type: object
+          required: [criteria, justification, history]
+          properties:
+            criteria:
+              type: array
+              items:
+                $ref: '#/components/schemas/Criterion'
+            justification:
+              type: string
+              description: Justificativa legível da posição atual
+            history:
+              type: array
+              items:
+                $ref: '#/components/schemas/HistoryEvent'
+
+    ContestRequest:
+      type: object
+      required: [justification]
+      properties:
+        justification:
+          type: string
+          minLength: 1
+        direction:
+          type: string
+          enum: [up, down]
+
+    ExportRequest:
+      type: object
+      required: [scope, rowCount]
+      properties:
+        scope:
+          type: string
+          enum: [full, filtered]
+        rowCount:
+          type: integer
+          minimum: 0
+
+    ExportRecord:
+      type: object
+      required: [id, by, at, scope, rowCount]
+      properties:
+        id:
+          type: string
+        by:
+          $ref: '#/components/schemas/Doctor'
+        at:
+          type: string
+          format: date-time
+        scope:
+          type: string
+          enum: [full, filtered]
+        rowCount:
+          type: integer

@@ -5,11 +5,11 @@ Status: rascunho
 
 ## Contexto
 
-O Pulse Clinical mostra dados de saúde de pacientes e registra decisões em nome de um profissional. Só médicos autenticados podem entrar, e toda decisão precisa saber quem a tomou (constituição, itens 2 e 6).
+O SUSight Clínica mostra dados de saúde de pacientes e registra decisões em nome de um profissional. Só médicos autenticados podem entrar, e toda decisão precisa saber quem a tomou (constituição, itens 2 e 6).
 
 ## Comportamento esperado
 
-- O usuário que abre o Pulse Clinical sem sessão vê a tela de login.
+- O usuário que abre o SUSight Clínica sem sessão vê a tela de login.
 - O usuário informa suas credenciais e entra.
 - Com credenciais válidas, o sistema leva o usuário para as revisões pendentes.
 - Com credenciais inválidas, o sistema mostra uma mensagem em português, sem dizer qual campo está errado, e mantém o identificador preenchido.

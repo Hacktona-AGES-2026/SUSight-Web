@@ -1,4 +1,4 @@
-# Spec: Testes do Pulse Clinical (médico desktop)
+# Spec: Testes do SUSight Clínica (médico desktop)
 
 Issue: Hacktona-AGES-2026/SUSight#27
 Status: rascunho
