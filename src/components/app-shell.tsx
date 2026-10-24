@@ -45,7 +45,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   );
 
   async function signOut() {
-    await dataSource.logout();
+    await dataSource.logout().catch(() => {});
     router.replace("/login");
   }
 

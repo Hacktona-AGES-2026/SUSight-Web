@@ -22,7 +22,6 @@ export function LoginForm() {
   const params = useSearchParams();
   const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
-  const [code, setCode] = useState("");
   const [error, setError] = useState<string>();
   const [sending, setSending] = useState(false);
 
@@ -74,7 +73,7 @@ export function LoginForm() {
             Entrar no SUSight Clínica
           </h1>
           <p className="text-subtitle text-ink-secondary">
-            Use seu registro profissional.
+            Use seu usuário e senha.
           </p>
           {params.get("expirou") && (
             <Notice
@@ -83,10 +82,10 @@ export function LoginForm() {
             />
           )}
           <TextField
-            label="CRM e UF"
+            label="Usuário"
             value={identifier}
             onChange={(e) => setIdentifier(e.target.value)}
-            placeholder="CRM/RJ 123456"
+            placeholder="medico-demo"
             autoComplete="username"
             required
           />
@@ -97,15 +96,6 @@ export function LoginForm() {
             onChange={(e) => setPassword(e.target.value)}
             autoComplete="current-password"
             required
-          />
-          {/* ponytail: código de verificação só no layout; o contrato ainda não o recebe */}
-          <TextField
-            label="Código de verificação"
-            value={code}
-            onChange={(e) => setCode(e.target.value)}
-            placeholder="000 000"
-            inputMode="numeric"
-            autoComplete="one-time-code"
           />
           {error && (
             <p role="alert" className="text-destructive text-subtitle">

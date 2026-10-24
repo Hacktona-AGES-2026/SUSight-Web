@@ -54,7 +54,7 @@ function timeline(
       at: enteredAt,
       time: false,
       title: "Entrou na fila",
-      detail: "Entrada na fila de cirurgias eletivas.",
+      detail: "Entrada na fila de cirurgias.",
       tag: "Entrada",
       tagTone: "brand" as const,
     },

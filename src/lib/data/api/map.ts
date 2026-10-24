@@ -24,6 +24,9 @@ export type BackendQueueRow = {
   justificativa?: string;
   criterios?: Record<string, number> | null;
   prioridade_regulacao?: string | null;
+  nome?: string | null;
+  procedimento?: string | null;
+  municipio?: string | null;
   em_reavaliacao?: boolean;
 };
 
@@ -104,7 +107,7 @@ const priorities: Record<string, Priority> = {
   Baixa: "Baixa",
 };
 
-/** A fila do backend não traz nome, CNS nem procedimento; o caso é a solicitação. */
+/** Nome e procedimento vêm da fila quando foram importados; sem eles, o caso é a solicitação. */
 export function patientFromRow(
   row: BackendQueueRow,
   now = new Date(),
@@ -112,9 +115,10 @@ export function patientFromRow(
   const waiting = new Date(now.getTime() - row.dias_em_fila * 86_400_000);
   return {
     id: row.solicitacao_id,
-    name: `Paciente ${row.paciente_id ?? row.solicitacao_id}`,
+    name: row.nome ?? `Paciente ${row.paciente_id ?? row.solicitacao_id}`,
     cnsMasked: `Solicitação ${row.solicitacao_id}`,
-    procedure: procedures[row.cid.slice(0, 3)] ?? `CID ${row.cid}`,
+    procedure:
+      row.procedimento ?? procedures[row.cid.slice(0, 3)] ?? `CID ${row.cid}`,
     priority: priorities[row.prioridade_regulacao ?? ""] ?? "Moderada",
     waitingSince: waiting.toISOString().slice(0, 10),
   };
