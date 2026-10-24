@@ -43,10 +43,23 @@ function toQueueEntry(e: QueueEntryDetail): QueueEntry {
  * (erros, status e mensagens), sem depender do backend. Cada instância
  * começa com uma cópia nova das fixtures.
  */
-export function createMockSource(): DataSource {
+export function createMockSource({
+  persistSession = false,
+  anyLogin = false,
+}: { persistSession?: boolean; anyLogin?: boolean } = {}): DataSource {
   const proposals = structuredClone(proposalFixtures);
   const queue = structuredClone(queueFixtures);
-  let signedIn = false;
+  // Com `persistSession`, recarregar a página não derruba o login de demonstração.
+  const store =
+    persistSession && typeof sessionStorage !== "undefined"
+      ? sessionStorage
+      : null;
+  let signedIn = store?.getItem("mock-session") === "1";
+  const setSignedIn = (value: boolean) => {
+    signedIn = value;
+    if (value) store?.setItem("mock-session", "1");
+    else store?.removeItem("mock-session");
+  };
   let nextId = 1;
 
   const newId = (prefix: string) => `${prefix}-${nextId++}`;
@@ -78,15 +91,17 @@ export function createMockSource(): DataSource {
 
   return {
     async login({ identifier, password }) {
+      // `anyLogin`: enquanto não há backend, qualquer valor preenchido entra.
       if (
-        identifier !== demoCredentials.identifier ||
-        password !== demoCredentials.password
+        !anyLogin &&
+        (identifier !== demoCredentials.identifier ||
+          password !== demoCredentials.password)
       ) {
         throw new ApiError(401, {
           message: "Não foi possível entrar. Confira os dados e tente de novo.",
         });
       }
-      signedIn = true;
+      setSignedIn(true);
       return {
         token: "mock-token",
         expiresAt: new Date(Date.now() + 8 * 60 * 60 * 1000).toISOString(),
@@ -95,7 +110,7 @@ export function createMockSource(): DataSource {
     },
 
     async logout() {
-      signedIn = false;
+      setSignedIn(false);
     },
 
     async me() {
