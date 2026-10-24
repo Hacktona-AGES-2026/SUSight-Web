@@ -5,7 +5,7 @@ Status: rascunho
 
 ## Contexto
 
-A IA analisa exames, laudos e atualizações dos pacientes e propõe mudanças de posição na fila. Nada muda sem um médico aprovar (constituição, item 1). O médico precisa de uma lista do que espera revisão e de uma tela que explique cada proposta de forma legível (item 5).
+A IA analisa exames e laudos dos pacientes e propõe mudanças de posição na fila. Nada muda sem um médico aprovar (constituição, item 1). O médico precisa de uma lista do que espera revisão e de uma tela que explique cada proposta de forma legível (item 5).
 
 ## Comportamento esperado
 
@@ -24,7 +24,7 @@ A IA analisa exames, laudos e atualizações dos pacientes e propõe mudanças d
   - dados do paciente (CNS mascarado), procedimento, prioridade validada pela regulação e tempo de espera;
   - posição atual, posição proposta e a diferença;
   - os critérios que a IA usou (limitação funcional, ASA, dor, questões socioeconômicas, comorbidades, tempo de espera, deterioração) com o valor de cada um e o que mudou desde a última avaliação;
-  - os documentos que originaram a proposta (exame, laudo ou relato), indicando se cada um é exame ou relato do paciente;
+  - os documentos que originaram a proposta (exame ou laudo), com nome, tipo e data;
   - o tribunal de IAs: o parecer de cada agente (Evidências, Contestação, Equidade e regras) em texto legível;
   - as regras de equidade verificadas: limite de elevação por reavaliação e não ultrapassar quem tem prioridade maior e mais espera;
   - o histórico de decisões anteriores deste paciente, com nome, data e hora.
@@ -38,7 +38,7 @@ A IA analisa exames, laudos e atualizações dos pacientes e propõe mudanças d
 - [ ] Busca por nome ou CNS e filtros por prioridade e procedimento funcionam juntos.
 - [ ] Lista vazia mostra "Nenhuma revisão pendente." em vez de uma tabela vazia.
 - [ ] A revisão mostra critérios, documentos, os três pareceres do tribunal, regras de equidade e histórico.
-- [ ] Relatos do paciente são identificados como relato, separados dos exames.
+- [ ] A revisão mostra apenas exames e laudos como origem da proposta. O paciente não envia relato de sintomas.
 - [ ] Falha ao carregar mostra mensagem em português e opção de tentar de novo.
 - [ ] Proposta que outro médico já decidiu mostra "Esta proposta já foi decidida por <nome> em <data e hora>." e não aceita nova decisão.
 
