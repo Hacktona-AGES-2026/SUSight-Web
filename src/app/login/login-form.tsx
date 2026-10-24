@@ -47,9 +47,14 @@ export function LoginForm() {
   return (
     <main className="flex flex-1 flex-col md:flex-row">
       <section className="bg-brand-highlight flex flex-col justify-center gap-3 px-8 py-12 md:w-[480px] md:px-14">
-        <div className="bg-background flex size-16 items-center justify-center rounded-[20px]">
-          <Image src="/pulse.svg" alt="" width={32} height={32} priority />
-        </div>
+        <Image
+          src="/logo.png"
+          alt=""
+          width={64}
+          height={64}
+          className="rounded-[20px]"
+          priority
+        />
         <h2 className="text-title-page font-bold">
           Decisões justas começam com a revisão de quem cuida.
         </h2>
