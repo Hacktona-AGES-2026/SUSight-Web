@@ -65,7 +65,7 @@ export function QueueTable() {
     <>
       <PageHeader
         title="Fila do SUS"
-        subtitle={`Ordem vigente da fila de cirurgias eletivas${lastChange ? `, atualizada em ${formatDay(lastChange)} às ${formatTime(lastChange)}` : ""}.`}
+        subtitle={`Ordem vigente da fila de cirurgias${lastChange ? `, atualizada em ${formatDay(lastChange)} às ${formatTime(lastChange)}` : ""}.`}
         action={
           <Button asChild variant="outline" size="desktop">
             <Link href="/exportar">Exportar CSV</Link>
