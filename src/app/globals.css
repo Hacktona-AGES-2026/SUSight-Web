@@ -1,26 +1,128 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@custom-variant dark (&:is(.dark *));
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-inter);
+  --font-heading: var(--font-inter);
+  --color-brand: var(--brand);
+  --color-brand-soft: var(--brand-soft);
+  --color-brand-highlight: var(--brand-highlight);
+  --color-brand-medium: var(--brand-medium);
+  --color-subtle-foreground: var(--subtle-foreground);
+  --color-destructive-soft: var(--destructive-soft);
+
+  /* Estilos de texto "Pulse/*" do Figma */
+  --text-title-lg: 34px;
+  --text-title-lg--line-height: 41px;
+  --text-title-page: 28px;
+  --text-title-page--line-height: 34px;
+  --text-title-3: 20px;
+  --text-title-3--line-height: 25px;
+  --text-body: 17px;
+  --text-body--line-height: 22px;
+  --text-subtitle: 15px;
+  --text-subtitle--line-height: 20px;
+  --text-note: 13px;
+  --text-note--line-height: 18px;
+  --text-caption: 12px;
+  --text-caption--line-height: 16px;
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/*
+ * Tokens do Figma (Hackathona 2026, página "Telas · Estilo Apple").
+ * Os nomes no Figma (azul/*, verde/*, amarelo/*) descrevem cores antigas;
+ * aqui usamos nomes semânticos. Origem de cada valor ao lado.
+ */
+:root {
+  --background: #ffffff; /* fundo/superficie */
+  --foreground: #1c1c1e; /* texto/principal */
+  --card: #ffffff; /* fundo/cartao */
+  --card-foreground: #1c1c1e;
+  --popover: #ffffff;
+  --popover-foreground: #1c1c1e;
+  --primary: #f5a3c4; /* amarelo/acao: botão principal */
+  --primary-foreground: #1c1c1e;
+  --secondary: #fce6ee; /* azul/suave: botão secundário */
+  --secondary-foreground: #1c1c1e;
+  --muted: #ebebef; /* verde/chip */
+  --muted-foreground: #8e8e93; /* texto/secundario */
+  --accent: #fce6ee; /* azul/suave: item ativo, destaque de fundo */
+  --accent-foreground: #a3205b; /* azul/tinta */
+  --destructive: #9c1f52; /* vermelho/tinta */
+  --destructive-soft: #fdeef4; /* vermelho/suave */
+  --border: #e8e8ed; /* linha/divisor */
+  --input: #e8e8ed;
+  --ring: #e58ab1; /* azul/medio */
+  --brand: #a3205b; /* azul/tinta: ícones, títulos de destaque */
+  --brand-soft: #fce6ee; /* azul/suave */
+  --brand-highlight: #f9d6e4; /* azul/destaque: fundo da abertura */
+  --brand-medium: #e58ab1; /* azul/medio */
+  --subtle-foreground: #3a3a3c; /* texto/suave */
+  --chart-1: #a3205b;
+  --chart-2: #e58ab1;
+  --chart-3: #f5a3c4;
+  --chart-4: #f9d6e4;
+  --chart-5: #8e8e93;
+  --radius: 0.625rem; /* cartões: 10px */
+  --sidebar: #ffffff;
+  --sidebar-foreground: #1c1c1e;
+  --sidebar-primary: #a3205b;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #fce6ee;
+  --sidebar-accent-foreground: #1c1c1e;
+  --sidebar-border: #e8e8ed;
+  --sidebar-ring: #e58ab1;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
   }
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  body {
+    @apply bg-background text-foreground;
+  }
+  html {
+    @apply font-sans;
+  }
 }
