@@ -551,6 +551,11 @@ export interface components {
             /** @example Equidade e regras */
             label: string;
             opinion: string;
+            /**
+             * @description Veredito do agente, quando o backend o informa
+             * @enum {string}
+             */
+            verdict?: "a_favor" | "contra" | "ajustar";
         };
         EquityCheck: {
             /** @enum {string} */
@@ -561,7 +566,7 @@ export interface components {
             detail: string;
         };
         /** @enum {string} */
-        HistoryEventType: "approve" | "reject" | "request_info" | "patient_reply" | "contest" | "contest_result" | "position_change";
+        HistoryEventType: "approve" | "reject" | "request_info" | "patient_reply" | "contest" | "contest_result" | "position_change" | "queue_entry" | "document_received" | "other";
         HistoryEvent: {
             id: string;
             type: components["schemas"]["HistoryEventType"];
@@ -609,6 +614,8 @@ export interface components {
             type: components["schemas"]["DecisionType"];
             /** @description Obrigatório para `reject` (motivo) e `request_info` (mensagem ao paciente) */
             text?: string;
+            /** @description Exames ou documentos pedidos em `request_info` */
+            exams?: string[];
         };
         Decision: {
             id: string;
