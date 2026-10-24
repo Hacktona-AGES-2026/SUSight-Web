@@ -1,9 +1,7 @@
-// Assinatura de Web Push do navegador do médico (spec 010).
+import type { WebPushSubscription } from "@/lib/api/types";
 
-export type PushSubscriptionJSON = {
-  endpoint: string;
-  keys: { p256dh: string; auth: string };
-};
+// Assinatura de Web Push do navegador do médico (spec 010), no formato do contrato.
+export type PushSubscriptionJSON = WebPushSubscription;
 
 /** Valida a assinatura enviada pelo navegador. `null` se for inválida. */
 export function parseSubscription(raw: unknown): PushSubscriptionJSON | null {

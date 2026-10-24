@@ -1,15 +1,10 @@
 // Avisos do médico enviados por Web Push (spec 010).
 // Só usam os campos abaixo: CNS e dados clínicos nunca chegam ao aviso (LGPD).
 
-export type DoctorPushEvent =
-  | { type: "new_proposal"; proposalId: string; patientName: string }
-  | { type: "queue_updated"; notifiedCount: number }
-  | {
-      type: "patient_replied";
-      proposalId: string;
-      patientName: string;
-      documentLabel: string;
-    };
+import type { DoctorPushEvent } from "@/lib/api/types";
+
+// O formato do evento vem do contrato (docs/api/openapi.yaml), igual para o backend e o mock.
+export type { DoctorPushEvent };
 
 export type DoctorNotification = {
   title: string;
