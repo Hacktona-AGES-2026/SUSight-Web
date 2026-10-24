@@ -28,6 +28,8 @@ tags:
     description: Fila do SUS e contestação (spec 005)
   - name: exports
     description: Registro de export CSV (spec 006)
+  - name: notifications
+    description: Avisos do médico por Web Push (spec 010)
 
 paths:
   /auth/login:
@@ -241,6 +243,32 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ExportRecord'
+        '401':
+          $ref: '#/components/responses/SessionExpired'
+
+  /me/web-push-subscription:
+    post:
+      tags: [notifications]
+      summary: Registrar o navegador do médico para receber avisos
+      description: |
+        Guarda a assinatura de Web Push do navegador do médico logado. O backend envia os avisos
+        (`DoctorPushEvent`) quando há nova proposta, quando um paciente responde a um pedido de
+        informações e quando uma fila aprovada é aplicada. Os avisos nunca levam CNS nem dado clínico.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebPushSubscription'
+      responses:
+        '204':
+          description: Assinatura guardada
+        '400':
+          description: Assinatura inválida
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '401':
           $ref: '#/components/responses/SessionExpired'
 
@@ -666,3 +694,56 @@ components:
           enum: [full, filtered]
         rowCount:
           type: integer
+
+    WebPushSubscription:
+      type: object
+      description: Formato de `PushSubscription.toJSON()` do navegador
+      required: [endpoint, keys]
+      properties:
+        endpoint:
+          type: string
+          format: uri
+          description: Endereço https do serviço de push do navegador
+        keys:
+          type: object
+          required: [p256dh, auth]
+          properties:
+            p256dh:
+              type: string
+            auth:
+              type: string
+
+    DoctorPushEvent:
+      description: |
+        Evento que o backend transforma em aviso para o médico (Web Push). O texto final é montado
+        pelo web (`notificationFor`); o evento só leva o mínimo para identificar a proposta (LGPD).
+      oneOf:
+        - type: object
+          required: [type, proposalId, patientName]
+          properties:
+            type:
+              const: new_proposal
+            proposalId:
+              type: string
+            patientName:
+              type: string
+        - type: object
+          required: [type, notifiedCount]
+          properties:
+            type:
+              const: queue_updated
+            notifiedCount:
+              type: integer
+              minimum: 0
+        - type: object
+          required: [type, proposalId, patientName, documentLabel]
+          properties:
+            type:
+              const: patient_replied
+            proposalId:
+              type: string
+            patientName:
+              type: string
+            documentLabel:
+              type: string
+              example: o raio-X

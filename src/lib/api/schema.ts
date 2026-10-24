@@ -461,6 +461,59 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/me/web-push-subscription": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Registrar o navegador do médico para receber avisos
+         * @description Guarda a assinatura de Web Push do navegador do médico logado. O backend envia os avisos
+         *     (`DoctorPushEvent`) quando há nova proposta, quando um paciente responde a um pedido de
+         *     informações e quando uma fila aprovada é aplicada. Os avisos nunca levam CNS nem dado clínico.
+         */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["WebPushSubscription"];
+                };
+            };
+            responses: {
+                /** @description Assinatura guardada */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Assinatura inválida */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                401: components["responses"]["SessionExpired"];
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -659,6 +712,39 @@ export interface components {
             /** @enum {string} */
             scope: "full" | "filtered";
             rowCount: number;
+        };
+        /** @description Formato de `PushSubscription.toJSON()` do navegador */
+        WebPushSubscription: {
+            /**
+             * Format: uri
+             * @description Endereço https do serviço de push do navegador
+             */
+            endpoint: string;
+            keys: {
+                p256dh: string;
+                auth: string;
+            };
+        };
+        /**
+         * @description Evento que o backend transforma em aviso para o médico (Web Push). O texto final é montado
+         *     pelo web (`notificationFor`); o evento só leva o mínimo para identificar a proposta (LGPD).
+         */
+        DoctorPushEvent: {
+            /** @constant */
+            type: "new_proposal";
+            proposalId: string;
+            patientName: string;
+        } | {
+            /** @constant */
+            type: "queue_updated";
+            notifiedCount: number;
+        } | {
+            /** @constant */
+            type: "patient_replied";
+            proposalId: string;
+            patientName: string;
+            /** @example o raio-X */
+            documentLabel: string;
         };
     };
     responses: {

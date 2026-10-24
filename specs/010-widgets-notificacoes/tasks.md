@@ -12,5 +12,5 @@ Cada tarefa é pequena, verificável e vira um commit atômico. Os testes vêm a
 - [x] 6. Web Push: chaves VAPID no `.env.example`, pedido de permissão com explicação e `POST /api/push/subscription`.
 - [x] 7. Service worker: mostrar o aviso com os botões e abrir a tela certa no clique.
 - [x] 8. Modo mock: envio com `web-push` depois de aprovar e rota `/api/push/demo` para "Nova proposta" e "Paciente respondeu".
-- [ ] 9. Contrato: `POST /me/web-push-subscription` e formato do evento de push; regenerar os tipos.
+- [x] 9. Contrato: `POST /me/web-push-subscription` e formato do evento de push; regenerar os tipos.
 - [ ] 10. Prova no Windows 11 com Edge e README: instalar o PWA, adicionar os widgets e testar os avisos.

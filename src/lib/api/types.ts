@@ -34,3 +34,5 @@ export type QueueEntryDetail = Schemas["QueueEntryDetail"];
 export type ContestRequest = Schemas["ContestRequest"];
 export type ExportRequest = Schemas["ExportRequest"];
 export type ExportRecord = Schemas["ExportRecord"];
+export type WebPushSubscription = Schemas["WebPushSubscription"];
+export type DoctorPushEvent = Schemas["DoctorPushEvent"];
