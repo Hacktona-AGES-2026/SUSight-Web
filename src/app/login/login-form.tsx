@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { TextField } from "@/components/field";
 import { Notice } from "@/components/notice";
 import { dataSource } from "@/lib/data";
+import { demoCredentials } from "@/lib/data/mock/fixtures";
 import { errorMessage } from "@/lib/use-data";
 
 /** Só aceita caminhos internos, para não redirecionar para outro site. */
@@ -25,13 +26,17 @@ export function LoginForm() {
   const [error, setError] = useState<string>();
   const [sending, setSending] = useState(false);
 
-  async function submit(event: React.FormEvent) {
+  function submit(event: React.FormEvent) {
     event.preventDefault();
+    return enter({ identifier, password });
+  }
+
+  async function enter(credentials: { identifier: string; password: string }) {
     if (sending) return;
     setSending(true);
     setError(undefined);
     try {
-      await dataSource.login({ identifier, password });
+      await dataSource.login(credentials);
       router.replace(safeNext(params.get("next")));
     } catch (e) {
       setError(errorMessage(e));
@@ -70,12 +75,12 @@ export function LoginForm() {
               tone="warning"
             />
           )}
-          {/* ponytail: gov.br ainda sem integração (spec 002, questão em aberto) */}
+          {/* ponytail: gov.br simulado, entra com o médico de demonstração até haver integração (spec 002) */}
           <button
             type="button"
-            disabled
-            title="Entrada com gov.br ainda não está disponível"
-            className="text-body h-14 w-full rounded-[28px] bg-[#111] font-semibold text-white disabled:opacity-50"
+            disabled={sending}
+            onClick={() => enter(demoCredentials)}
+            className="text-body h-14 w-full rounded-[28px] bg-[#111] font-semibold text-white disabled:opacity-60"
           >
             Entrar com gov.br
           </button>
