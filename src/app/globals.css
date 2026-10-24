@@ -15,6 +15,10 @@
   --color-brand-medium: var(--brand-medium);
   --color-subtle-foreground: var(--subtle-foreground);
   --color-destructive-soft: var(--destructive-soft);
+  --color-destructive-dot: var(--destructive-dot);
+  --color-ink-secondary: var(--ink-secondary);
+  --color-line-strong: var(--line-strong);
+  --color-warning: var(--warning);
 
   /* Estilos de texto "Pulse/*" do Figma */
   --text-title-lg: 34px;
@@ -27,6 +31,8 @@
   --text-body--line-height: 22px;
   --text-subtitle: 15px;
   --text-subtitle--line-height: 20px;
+  --text-title-2: 22px;
+  --text-title-2--line-height: 28px;
   --text-note: 13px;
   --text-note--line-height: 18px;
   --text-caption: 12px;
@@ -98,7 +104,11 @@
   --brand-soft: #fce6ee; /* azul/suave */
   --brand-highlight: #f9d6e4; /* azul/destaque: fundo da abertura */
   --brand-medium: #e58ab1; /* azul/medio */
-  --subtle-foreground: #3a3a3c; /* texto/suave */
+
+  --ink-secondary: #636366; /* texto/secundario (valor do Figma) */
+  --destructive-dot: #d6336c; /* vermelho/ponto */
+  --line-strong: #c7c7cc; /* linha/seta */
+  --warning: #7a1b4a; /* amarelo/tinta */
   --chart-1: #a3205b;
   --chart-2: #e58ab1;
   --chart-3: #f5a3c4;
