@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { TextField } from "@/components/field";
 import { Notice } from "@/components/notice";
@@ -29,6 +30,8 @@ export function LoginForm() {
     event.preventDefault();
     return enter({ identifier, password });
   }
+
+  const filled = identifier.trim() !== "" && password !== "";
 
   async function enter(credentials: { identifier: string; password: string }) {
     if (sending) return;
@@ -112,7 +115,10 @@ export function LoginForm() {
           <Button
             type="submit"
             disabled={sending}
-            className="text-body h-14 rounded-[28px] font-semibold"
+            className={cn(
+              "text-body h-14 rounded-[28px] font-semibold",
+              filled && "bg-brand hover:bg-brand/90 text-white",
+            )}
           >
             Entrar
           </Button>
