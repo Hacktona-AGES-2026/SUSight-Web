@@ -67,6 +67,42 @@ O contrato da API fica em [docs/api/openapi.yaml](docs/api/openapi.yaml). Ao mud
 
 As fixtures do mock ficam em [src/lib/data/mock/fixtures.ts](src/lib/data/mock/fixtures.ts). Os dados são fictícios, e o CNS só aparece mascarado.
 
+## Widgets e avisos do Windows 11 (spec 010)
+
+O SUSight Clínica é um PWA. Instalado pelo Microsoft Edge no Windows 11, ele oferece dois widgets no painel de widgets e avisos do sistema.
+
+| O quê                                | Onde fica                                                                          |
+| ------------------------------------ | ---------------------------------------------------------------------------------- |
+| Manifest com os widgets              | [src/app/manifest.ts](src/app/manifest.ts)                                         |
+| Modelos dos widgets (Adaptive Cards) | [public/widgets](public/widgets)                                                   |
+| Dados do widget "Aprovações"         | [src/app/api/widgets/aprovacoes/route.ts](src/app/api/widgets/aprovacoes/route.ts) |
+| Service worker (widgets e avisos)    | [public/sw.js](public/sw.js)                                                       |
+| Regras e textos dos widgets e avisos | [src/lib/widgets](src/lib/widgets)                                                 |
+| Assinatura e envio de Web Push       | [src/lib/push](src/lib/push) e [src/app/api/push](src/app/api/push)                |
+
+### Configurar os avisos
+
+1. Gere as chaves VAPID: `pnpm dlx web-push generate-vapid-keys`.
+2. Coloque as chaves em `NEXT_PUBLIC_VAPID_PUBLIC_KEY`, `VAPID_PRIVATE_KEY` e `VAPID_SUBJECT` no `.env.local`. A chave privada nunca vai para o git.
+3. Reinicie o `pnpm dev`. A página inicial mostra o convite "Receber avisos". Até o layout interno da spec 002 existir, o convite fica lá.
+
+### Testar no Windows 11
+
+1. Abra o sistema no Microsoft Edge e instale-o como aplicativo (menu "Aplicativos" > "Instalar este site como um aplicativo"). O service worker e a instalação funcionam em `http://localhost`; em outros endereços é preciso HTTPS.
+2. Abra o painel de widgets (Windows + W), clique em "+", procure "SUSight Clínica" e adicione "Aprovações" e "Enviar documento".
+3. "Revisar" abre as revisões pendentes; "Enviar documento" abre o envio de documento.
+4. Para testar os avisos no modo mock, ative os avisos e dispare um aviso de demonstração:
+
+```bash
+curl -X POST http://localhost:3000/api/push/demo \
+  -H "Content-Type: application/json" \
+  -d '{"type":"new_proposal"}'   # ou queue_updated, patient_replied
+```
+
+Com o modo API, quem envia os avisos é o backend (`POST /me/web-push-subscription` e o evento `DoctorPushEvent` no contrato). Essa parte depende da sessão da spec 002.
+
+Acessibilidade: os widgets têm o texto lido pelo Narrador do Windows (`speak`) e os avisos usam o título e o texto do sistema, lidos pelo leitor de tela.
+
 ## Design
 
 As telas seguem o Figma "Hackathona 2026" (página "Telas · Estilo Apple"). Os tokens de cor e texto estão em [src/app/globals.css](src/app/globals.css), com nomes semânticos e o nome original do Figma em comentário. A fonte é a Inter, no lugar da SF Pro do Figma.

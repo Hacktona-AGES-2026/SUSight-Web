@@ -13,4 +13,4 @@ Cada tarefa é pequena, verificável e vira um commit atômico. Os testes vêm a
 - [x] 7. Service worker: mostrar o aviso com os botões e abrir a tela certa no clique.
 - [x] 8. Modo mock: envio com `web-push` depois de aprovar e rota `/api/push/demo` para "Nova proposta" e "Paciente respondeu".
 - [x] 9. Contrato: `POST /me/web-push-subscription` e formato do evento de push; regenerar os tipos.
-- [ ] 10. Prova no Windows 11 com Edge e README: instalar o PWA, adicionar os widgets e testar os avisos.
+- [ ] 10. Prova no Windows 11 com Edge (pendente: precisa de uma máquina Windows 11) e README: instalar o PWA, adicionar os widgets e testar os avisos (feito).
