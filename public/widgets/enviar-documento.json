@@ -1,0 +1,26 @@
+{
+  "type": "AdaptiveCard",
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "version": "1.5",
+  "speak": "${altText}",
+  "selectAction": {
+    "type": "Action.Execute",
+    "verb": "open",
+    "data": { "url": "${url}" }
+  },
+  "body": [
+    {
+      "type": "Image",
+      "url": "/widgets/icon-64.png",
+      "width": "24px",
+      "altText": ""
+    },
+    {
+      "type": "TextBlock",
+      "text": "Enviar documento",
+      "weight": "Bolder",
+      "color": "Accent",
+      "spacing": "ExtraLarge"
+    }
+  ]
+}

@@ -6,7 +6,7 @@ Cada tarefa é pequena, verificável e vira um commit atômico. Os testes vêm a
 
 - [x] 1. Regras: testes e `approvalsWidgetData` e `notificationFor`, sem CNS nem dado clínico.
 - [x] 2. Ícones PNG da marca (192 e 512 px) e manifest com nome, cores, `start_url` e os dois widgets.
-- [ ] 3. Modelos dos widgets em Adaptive Cards ("Aprovações", com o estado "sem sessão", e "Enviar documento"), com textos para o Narrador.
+- [x] 3. Modelos dos widgets em Adaptive Cards ("Aprovações", com o estado "sem sessão", e "Enviar documento"), com textos para o Narrador.
 - [ ] 4. Rota `/api/widgets/aprovacoes`: testes e dados a partir da camada de dados.
 - [ ] 5. Service worker: widgets (instalar, abrir painel, atualizar e clicar) e registro no layout.
 - [ ] 6. Web Push: chaves VAPID no `.env.example`, pedido de permissão com explicação e `POST /api/push/subscription`.
