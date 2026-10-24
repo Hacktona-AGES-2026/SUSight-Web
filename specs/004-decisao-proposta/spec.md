@@ -49,6 +49,10 @@ Na tela de revisão da proposta (spec 003), o usuário tem três ações.
 - [ ] Decisão em proposta já decidida por outro médico mostra aviso e não é aplicada.
 - [ ] Falha ao enviar mantém o texto digitado e permite tentar de novo.
 
+## Testes (TDD)
+
+Os testes vêm antes do código. Cada critério de aceite acima vira pelo menos um teste automatizado que falha primeiro (red), e a implementação só termina quando todos passam (green). Critério que não puder ser testado automaticamente leva uma justificativa escrita. Testes de unidade e de ponta a ponta no navegador (spec 007).
+
 ## Fora do escopo
 
 - Editar a posição proposta manualmente antes de aprovar.

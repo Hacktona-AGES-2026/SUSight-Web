@@ -27,6 +27,10 @@ A entrega final do hackathon é um CSV com a fila de cirurgias eletivas ordenada
 - [ ] Fila vazia gera um CSV só com o cabeçalho e um aviso na tela.
 - [ ] O export fica registrado com nome, data e hora.
 
+## Testes (TDD)
+
+Os testes vêm antes do código. Cada critério de aceite acima vira pelo menos um teste automatizado que falha primeiro (red), e a implementação só termina quando todos passam (green). Critério que não puder ser testado automaticamente leva uma justificativa escrita. Testes de unidade e de ponta a ponta no navegador (spec 007).
+
 ## Fora do escopo
 
 - Outros formatos (Excel, PDF).

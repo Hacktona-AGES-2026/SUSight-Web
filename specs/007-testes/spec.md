@@ -29,6 +29,10 @@ As telas do médico mudam a fila do SUS de pacientes reais. Um erro em aprovar, 
 - [ ] Existe uma tabela ligando cada critério de aceite das specs 002 a 006 ao teste que o cobre.
 - [ ] Um teste de ponta a ponta verifica que nenhuma tela mostra o CNS completo.
 
+## Testes (TDD)
+
+Os testes vêm antes do código. Cada critério de aceite acima vira pelo menos um teste automatizado que falha primeiro (red), e a implementação só termina quando todos passam (green). Critério que não puder ser testado automaticamente leva uma justificativa escrita. Testes de unidade e de ponta a ponta no navegador (spec 007).
+
 ## Fora do escopo
 
 - Testes do backend, da IA e do tribunal.
