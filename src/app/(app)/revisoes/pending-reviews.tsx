@@ -11,7 +11,7 @@ import { SelectField, TextField } from "@/components/field";
 import { FlashNotice } from "@/components/flash-notice";
 import type { ProposalDetail, ProposalStatus } from "@/lib/api/types";
 import { dataSource } from "@/lib/data";
-import { maskCns, ordinal, relativeDays } from "@/lib/format";
+import { patientRef, ordinal, relativeDays } from "@/lib/format";
 import { hasReservations } from "@/lib/review";
 import { useData } from "@/lib/use-data";
 
@@ -134,7 +134,7 @@ function ReviewCard({
       <div className="flex min-w-0 flex-1 flex-col gap-1">
         <h2 className="text-body font-semibold">{p.patient.name}</h2>
         <p className="text-note text-ink-secondary">
-          CNS {maskCns(p.patient.cnsMasked)} · {p.patient.procedure}
+          {patientRef(p.patient.cnsMasked)} · {p.patient.procedure}
         </p>
         <p className="text-subtitle text-subtle-foreground">
           {p.patient.priority} · {ordinal(p.currentPosition)} →{" "}

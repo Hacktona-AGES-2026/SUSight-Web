@@ -15,7 +15,7 @@ import {
   daysSince,
   formatDay,
   formatTime,
-  maskCns,
+  patientRef,
   ordinal,
 } from "@/lib/format";
 import { useData } from "@/lib/use-data";
@@ -168,7 +168,7 @@ export function QueueTable() {
                         {e.patient.name}
                       </Link>
                       <span className="text-note text-ink-secondary">
-                        CNS {maskCns(e.patient.cnsMasked)}
+                        {patientRef(e.patient.cnsMasked)}
                       </span>
                     </td>
                     <td className="text-subtitle px-4 py-3.5">

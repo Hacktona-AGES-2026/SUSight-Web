@@ -9,6 +9,9 @@ const titles: Record<HistoryEvent["type"], string> = {
   contest: "Contestação registrada",
   contest_result: "Resultado da contestação",
   position_change: "Posição alterada",
+  queue_entry: "Entrou na fila",
+  document_received: "Documento recebido",
+  other: "Outro evento",
 };
 
 /** Rótulo curto da etiqueta de cada evento. */
@@ -20,6 +23,9 @@ export const eventTags: Record<HistoryEvent["type"], string> = {
   contest: "Contestação",
   contest_result: "Contestação",
   position_change: "Posição",
+  queue_entry: "Entrada",
+  document_received: "Documento",
+  other: "Evento",
 };
 
 export function eventTitle(e: HistoryEvent) {
@@ -42,6 +48,7 @@ export function eventDetail(e: HistoryEvent) {
     case "contest":
       return `${by} contestou a posição: ${e.text ?? ""}`;
     default:
+      // Eventos do backend já trazem o texto pronto.
       return e.text ?? "";
   }
 }

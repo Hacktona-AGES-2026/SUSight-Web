@@ -13,7 +13,7 @@ import {
   daysSince,
   formatDay,
   formatTime,
-  maskCns,
+  patientRef,
   ordinal,
 } from "@/lib/format";
 import { agentVerdict } from "@/lib/review";
@@ -34,6 +34,9 @@ const historyLabels: Record<string, string> = {
   contest: "Contestou",
   contest_result: "Resultado da contestação",
   position_change: "Mudou a posição",
+  queue_entry: "Entrou na fila",
+  document_received: "Documento recebido",
+  other: "Outro evento",
 };
 
 export function ProposalReview({ id }: { id: string }) {
@@ -55,7 +58,7 @@ export function ProposalReview({ id }: { id: string }) {
     <>
       <PageHeader
         title="Revisão da proposta"
-        subtitle={`${p.patient.name} · CNS ${maskCns(p.patient.cnsMasked)} · ${p.patient.procedure}`}
+        subtitle={`${p.patient.name} · ${patientRef(p.patient.cnsMasked)} · ${p.patient.procedure}`}
       />
 
       <div className="grid items-start gap-3 sm:grid-cols-3">
