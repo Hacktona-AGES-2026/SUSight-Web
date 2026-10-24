@@ -1,6 +1,6 @@
 # SUSight-Web
 
-Pulse Clinical: aplicação web para o médico revisar propostas de fila, decidir e exportar a fila ordenada em CSV.
+SUSight Clínica: aplicação web para o médico revisar propostas de fila, decidir e exportar a fila ordenada em CSV.
 
 ## Spec-Driven Development (SDD)
 

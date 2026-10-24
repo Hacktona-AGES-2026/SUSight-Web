@@ -54,4 +54,4 @@ A IA analisa exames, laudos e atualizações dos pacientes e propõe mudanças d
 - Modelo do tribunal ainda em aberto no projeto: três agentes ou um advogado por paciente. Esta spec assume três agentes.
 - Médico vê propostas de todos os pacientes ou só das suas especialidades e unidades?
 - Paginação: qual volume de pendentes esperamos?
-- Os documentos precisam abrir dentro do Pulse Clinical?
+- Os documentos precisam abrir dentro do SUSight Clínica?

@@ -2,7 +2,7 @@
 
 ## Este repositório
 
-Pulse Clinical, a aplicação web do médico. Revisão de propostas de fila, decisões e export em CSV. Tasks com o prefixo [Web]. Consome a API do SUSight-Backend.
+SUSight Clínica, a aplicação web do médico. Revisão de propostas de fila, decisões e export em CSV. Tasks com o prefixo [Web]. Consome a API do SUSight-Backend.
 
 ## O desafio
 
@@ -73,7 +73,7 @@ Em aberto: a descrição original fala em um advogado por paciente da lista. O m
 ## Produto
 
 - **Pulse (app do paciente, híbrido):** upload de exames e laudos, posição na fila, notificações, widgets, histórico, atualizar situação (dor, mobilidade, texto ou áudio), perfil e preferências (LGPD, Face ID).
-- **Pulse Clinical (web, médico):** revisões pendentes, revisão da proposta com tribunal, aprovar, rejeitar com motivo ou pedir informações, fila do SUS e contestação, decisões registradas e exportar a fila em CSV.
+- **SUSight Clínica (web, médico):** revisões pendentes, revisão da proposta com tribunal, aprovar, rejeitar com motivo ou pedir informações, fila do SUS e contestação, decisões registradas e exportar a fila em CSV.
 - Fora do escopo: chatbot do paciente.
 
 ## Repositórios
@@ -81,7 +81,7 @@ Em aberto: a descrição original fala em um advogado por paciente da lista. O m
 | Repositório | Conteúdo |
 |---|---|
 | SUSight | App Pulse (paciente), design, documentação e coordenação |
-| SUSight-Web | Pulse Clinical (médico) |
+| SUSight-Web | SUSight Clínica (médico) |
 | SUSight-Backend | API, tratamento de dados, pontuação da fila, IA e tribunal |
 
 Tasks: https://github.com/orgs/Hacktona-AGES-2026/projects/6. O título de cada task começa com o repositório de destino.

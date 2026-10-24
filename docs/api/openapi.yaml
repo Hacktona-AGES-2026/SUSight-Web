@@ -1,9 +1,9 @@
 openapi: 3.1.0
 info:
-  title: SUSight API (contrato do Pulse Clinical)
+  title: SUSight API (contrato do SUSight Clínica)
   version: 0.1.0
   description: |
-    Contrato entre o Pulse Clinical (SUSight-Web) e o SUSight-Backend.
+    Contrato entre o SUSight Clínica (SUSight-Web) e o SUSight-Backend.
     É a referência para os dados de demonstração (mock) e para a implementação do backend.
 
     Regras gerais:
