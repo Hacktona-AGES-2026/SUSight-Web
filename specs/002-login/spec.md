@@ -17,7 +17,9 @@ O SUSight Clínica mostra dados de saúde de pacientes e registra decisões em n
 - O usuário pode sair a qualquer momento. Ao sair, volta para a tela de login e não consegue voltar às telas internas pelo botão "voltar" do navegador.
 - Quando a sessão expira, o sistema leva o usuário para o login com o aviso "Sua sessão expirou. Entre novamente." e, depois de entrar, o devolve para a tela onde estava.
 - Toda tela interna exige sessão. Acessar uma URL interna sem sessão leva ao login.
-- Em modo mock, existe pelo menos um médico de demonstração documentado no README.
+- Em modo mock, existe pelo menos um médico de demonstração documentado no README, e enquanto não há backend a tela aceita qualquer identificador e senha preenchidos.
+- A tela não tem login com gov.br por enquanto.
+- O botão "Entrar" fica rosa escuro quando os campos obrigatórios (CRM e senha) estão preenchidos.
 
 ## Critérios de aceite
 
