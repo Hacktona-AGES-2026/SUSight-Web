@@ -1,4 +1,4 @@
-// Service worker do SUSight Clínica (spec 010): widgets do Windows 11.
+// Service worker do SUSight Clínica (spec 010): widgets do Windows 11 e avisos por Web Push.
 // Regras e textos vêm prontos das rotas e dos modelos; aqui só exibimos e abrimos telas.
 
 // Tela aberta por cada widget quando o clique não traz URL.
@@ -95,4 +95,31 @@ self.addEventListener("widgetclick", (event) => {
   if (event.action !== "open") return;
   const tag = event.widget?.definition?.tag;
   event.waitUntil(openUrl(clickData(event).url ?? WIDGET_URLS[tag]));
+});
+
+// Aviso por Web Push. O conteúdo vem pronto do servidor (notificationFor em src/lib/widgets).
+self.addEventListener("push", (event) => {
+  let notification = null;
+  try {
+    notification = event.data?.json() ?? null;
+  } catch {
+    return;
+  }
+  if (!notification?.title) return;
+  event.waitUntil(
+    self.registration.showNotification(notification.title, {
+      body: notification.body,
+      tag: notification.tag,
+      lang: "pt-BR",
+      icon: "/icons/icon-192.png",
+      data: { url: notification.url },
+      actions: notification.actions ?? [],
+    }),
+  );
+});
+
+// Clique no aviso ou no botão ("Revisar", "Abrir"): só abre a tela, nunca decide nada.
+self.addEventListener("notificationclick", (event) => {
+  event.notification.close();
+  event.waitUntil(openUrl(event.notification.data?.url));
 });
