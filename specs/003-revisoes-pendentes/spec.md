@@ -11,34 +11,45 @@ A IA analisa exames, laudos e atualizações dos pacientes e propõe mudanças d
 
 ### Lista de revisões pendentes
 
-- O usuário vê, logo após o login, a lista de propostas que aguardam revisão.
-- Cada item mostra: nome do paciente, CNS mascarado, procedimento, prioridade atual (Baixa, Moderada, Alta), posição atual e posição proposta, motivo resumido da IA e há quanto tempo a proposta está aguardando.
+- O usuário vê, logo após o login, a tela "Revisões pendentes" com o texto "<N> propostas da IA aguardam sua decisão. Nada muda na fila até você aprovar."
+- Cada proposta aparece em um cartão com:
+  - nome do paciente;
+  - CNS mascarado, só com os 4 últimos dígitos (ex.: "CNS •••• 4821"), e procedimento;
+  - prioridade atual e proposta, e posição atual e proposta (ex.: "Moderada → Alta · 42ª → 31ª");
+  - um selo com o resultado do tribunal de IAs: "Compatível" ou "Com ressalvas";
+  - o botão "Revisar".
 - A lista vem ordenada da proposta mais antiga para a mais nova.
-- O usuário vê o total de pendentes.
-- O usuário pode buscar por nome ou CNS e filtrar por prioridade e procedimento.
-- Propostas em "aguardando paciente" (ver spec 004) aparecem em uma aba separada, não na lista principal.
+- Abaixo da lista, um aviso fixo: "A IA só propõe. Cada decisão exige a aprovação de um profissional e fica registrada com data e hora."
+- Propostas em espera por um pedido de informações (spec 004) não aparecem nesta lista.
 
 ### Revisão da proposta
 
-- O usuário abre uma proposta e vê:
-  - dados do paciente (CNS mascarado), procedimento, prioridade validada pela regulação e tempo de espera;
-  - posição atual, posição proposta e a diferença;
-  - os critérios que a IA usou (limitação funcional, ASA, dor, questões socioeconômicas, comorbidades, tempo de espera, deterioração) com o valor de cada um e o que mudou desde a última avaliação;
-  - os documentos que originaram a proposta (exame, laudo ou relato), indicando se cada um é exame ou relato do paciente;
-  - o tribunal de IAs: o parecer de cada agente (Evidências, Contestação, Equidade e regras) em texto legível;
-  - as regras de equidade verificadas: limite de elevação por reavaliação e não ultrapassar quem tem prioridade maior e mais espera;
-  - o histórico de decisões anteriores deste paciente, com nome, data e hora.
-- O usuário vê os botões de decisão da spec 004.
-- O usuário pode voltar à lista sem perder busca e filtros.
+- O usuário clica em "Revisar" e vê a tela "Revisão da proposta", com nome, CNS mascarado e procedimento no cabeçalho.
+- Três indicadores resumem a proposta:
+  - **Prioridade:** atual e proposta, e quando a regulação validou (ex.: "Moderada → Alta · Validada pela regulação em 12 set");
+  - **Posição na fila:** atual e proposta, com a elevação e se ela respeita o limite de equidade (ex.: "42ª → 31ª · Elevação de 11 posições, dentro do limite");
+  - **Confiança dos dados:** o nível (ex.: "Parcial") e o motivo (ex.: "Falta laudo recente da ressonância").
+- "Por que a IA propõe esta mudança": a justificativa em linguagem simples.
+- "Tribunal de IAs": um cartão para cada agente (Agente de evidências, Agente de contestação e Agente de equidade e regras), com o parecer em texto e um selo de veredito (ex.: "Favorável", "Com ressalvas", "Compatível").
+- "Evidências citadas": lista numerada (E1, E2, E3...) com cada documento usado, de onde veio, a data e se ainda está em análise. Relatos do paciente aparecem identificados como relato, separados dos exames.
+- O usuário vê os botões de decisão da spec 004: "Rejeitar", "Pedir informações" e "Aprovar nova fila".
+
+### O que mudou
+
+- Da revisão, o usuário abre a tela "O que mudou": "Compare os dados de antes com os dados considerados agora, com a fonte de cada um."
+- Cada linha mostra um critério, a fonte e a data (ex.: "Dor relatada · Paciente · 8 set"), o valor anterior e o valor atual (ex.: "5 em 10" e "8 em 10").
+- Aparecem só os critérios que mudaram, entre os que a IA usa: prioridade, dor, mobilidade e limitação funcional, exames recentes, ASA, comorbidades, questões socioeconômicas, tempo de espera e deterioração.
+- A tela tem os botões "Voltar à proposta" e "Aprovar nova fila".
 
 ## Critérios de aceite
 
-- [ ] A lista mostra só propostas pendentes, da mais antiga para a mais nova, com o total.
+- [ ] A lista mostra só propostas pendentes, da mais antiga para a mais nova, com o total no texto do topo.
+- [ ] Cada cartão mostra prioridade e posição, atual e proposta, e o selo do tribunal.
 - [ ] Nenhuma tela mostra o CNS completo.
-- [ ] Busca por nome ou CNS e filtros por prioridade e procedimento funcionam juntos.
-- [ ] Lista vazia mostra "Nenhuma revisão pendente." em vez de uma tabela vazia.
-- [ ] A revisão mostra critérios, documentos, os três pareceres do tribunal, regras de equidade e histórico.
+- [ ] Lista vazia mostra "Nenhuma revisão pendente." em vez de uma lista vazia.
+- [ ] A revisão mostra os três indicadores, a justificativa, os três pareceres do tribunal com veredito e as evidências citadas.
 - [ ] Relatos do paciente são identificados como relato, separados dos exames.
+- [ ] "O que mudou" mostra, para cada critério alterado, o valor anterior, o atual e a fonte.
 - [ ] Falha ao carregar mostra mensagem em português e opção de tentar de novo.
 - [ ] Proposta que outro médico já decidiu mostra "Esta proposta já foi decidida por <nome> em <data e hora>." e não aceita nova decisão.
 
@@ -51,7 +62,10 @@ A IA analisa exames, laudos e atualizações dos pacientes e propõe mudanças d
 
 ## Questões em aberto
 
-- Modelo do tribunal ainda em aberto no projeto: três agentes ou um advogado por paciente. Esta spec assume três agentes.
-- Médico vê propostas de todos os pacientes ou só das suas especialidades e unidades?
+- Como o usuário chega em "O que mudou"? A tela de revisão no Figma não mostra o link.
+- Quais são os níveis de "Confiança dos dados" (ex.: Completa, Parcial, Baixa) e o que define cada um?
+- Quais vereditos cada agente pode dar, e como eles viram o selo da lista ("Compatível" ou "Com ressalvas")?
+- Busca e filtros na lista, e o histórico de decisões do paciente na revisão, estavam na versão anterior desta spec e não aparecem no Figma. Entram depois ou saem?
+- O médico vê propostas de todos os pacientes ou só da sua especialidade e unidade de regulação?
 - Paginação: qual volume de pendentes esperamos?
-- Os documentos precisam abrir dentro do Pulse Clinical?
+- Os documentos precisam abrir dentro do SUSight Clínica?
